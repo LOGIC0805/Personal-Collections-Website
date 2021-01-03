@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<style>
+.standard-input{
+	height:100px;
+    width:500px;
+    background-color: aliceblue;
+    margin-top: 1em;
+}
+</style>
+
+<script src="static/js/jquery-3.5.1.min.js"></script>
+<script src="http://api.html5media.info/1.1.8/html5media.min.js"></script>
+
+
+<script type="text/javascript">
+
+    function submit(obj, content,type){
+        var url = "http://127.0.0.1:5000/block/insert";
+        var data = new FormData();
+        console.log(content);
+        data.append("content",content);
+        console.log(data);
+        data.append('type',type);
+        var that = obj;
+        $.ajax({
+            type: "post",
+            url: url,
+            data: data,
+            dataType:"json",
+            processData: false,
+            contentType: false,
+            success: function(data){
+                that.id =  data.id;
+            },
+            
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest.status);
+                alert(XMLHttpRequest.readyState);
+                alert(textStatus);
+                console.log(this);
+            }
+        });
+    }
+    
+    function swap(obj,dir){
+        var url = "http://127.0.0.1:5000/block/swap";
+        var pos = obj.parentNode.id;
+        if(dir == 'up' && pos>0){
+            pos --;
+
+        }
+        if(dir == 'down' &&dir <　$("#textList").childElementCount -1){
+            pos ++ ;
+        }
+
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {
+                new_order : pos,
+                id : obj.id
+            },
+            success: function(data){
+    			alert(data.msg);
+            },
+            
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest.status);
+                alert(XMLHttpRequest.readyState);
+                alert(textStatus);
+                console.log(this);
+            }
+        });
+    }
+
+    function gengerate_block(content){
+        var obj = document.createElement("div");
+        obj.className = "standard-input";
+        obj.id = document.getElementById('textList').childElementCount;
+        var up = document.createElement("div");
+        up.addEventListener("click",function(){swap(this,'up');});
+        up.innerText = "swap up";
+        obj.appendChild(up);
+        obj.appendChild(content);
+        var down = document.createElement("div");
+        down.addEventListener("click",function(){swap(this,'down')});
+        down.innerText = "swap down";
+        obj.appendChild(down);
+        return obj;
+    }
+
+    function add(){
+        var text = $("#myInput").val();
+        console.log(text);
+        $("#myInput").val("");
+
+        if(text == ""){
+            return ;
+        }
+
+        let div = document.createElement('div');
+        div.innerText = text;
+        submit(div,text,"text");
+        
+        $('#textList').append(gengerate_block(div));
+
+    }
+
+    function login(obj){
+        var phonenum = $(obj).parent().prev().prev().children("#phonenum").val();
+        var password = $(obj).parent().prev().children("#password").val();
+        var url = "http://127.0.0.1:5000/login";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                phonenum: phonenum,
+                password: password
+            },
+            success: function(data){
+    			alert(data.msg);
+                if(data.code == 0){
+                    var newurl = "http://127.0.0.1:5000/self%3Fphonenum%3D" + phonenum;
+                    window.location = newurl;
+                }
+    		},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest.status);
+                alert(XMLHttpRequest.readyState);
+                alert(textStatus);
+			    window.location = url;
+            }
+        });
+    }
+    </script>
+
+</head>
+<body>
+<div id="textList" style="width: 10px;">
+
+</div>
+<br>
+<input class="standard-input" type="text" id="myInput" />
+<script>
+    document.getElementById('myInput').addEventListener('paste',function(e){
+        if ( !(e.clipboardData && e.clipboardData.items) ) {
+            return;
+        }
+        for (var i = 0, len = e.clipboardData.items.length; i < len; i++) {
+            var item = e.clipboardData.items[i];
+
+            if (item.kind === "file") {
+                var f= item.getAsFile();
+                console.log(f);
+			
+					let reader = new FileReader();
+					reader.readAsDataURL(f);
+
+                    reader.onload = function(e) {
+                        let img = document.createElement('img');
+                        img.src = e.target.result;
+                        submit(img,[f],"picture");
+                        document.getElementById('textList').appendChild(gengerate_block(img));
+                        
+                    };
+			
+            }
+        }
+    });
+</script>
+<input type="button" value="add text" onclick="add()">
+</body>
+</html>
