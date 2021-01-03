@@ -18,13 +18,56 @@
 
 <script type="text/javascript">
 
-    function submit(obj, content,type){
+    var id = "0";
+    function getContent(){
+        var url = "http://127.0.0.1:5000/block/select";
+
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {
+                collection_id:id
+            },
+            dataType:"json",
+            processData: false,
+            contentType: false,
+            success: function(data){
+                var list = $("#textList");
+                var blocks = data.blocks;
+                for(block in blocks){
+                    var content;
+                    if(block.type == 'img'){
+                        content = document.createElement('img');
+                        content.src = block.content;
+                    }
+                    else if(block.type == 'text'){
+                        content = document.createElement('div');
+                        content.innerText = block.content;
+                    }
+                    else{
+                        content = document.createElement('div');
+                        content.innerText = block.content;
+                    }
+                    content.id = block.id;
+                    var block = gengerate_block(content);
+                    list.appendChild(block);
+                }
+            },
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest.status);
+                alert(XMLHttpRequest.readyState);
+                alert(textStatus);
+                console.log(this);
+            }
+        });
+    }
+
+    function submit(obj, content,type,order){
         var url = "http://127.0.0.1:5000/block/insert";
         var data = new FormData();
-        console.log(content);
         data.append("content",content);
-        console.log(data);
         data.append('type',type);
+        data.append('order',order);
         var that = obj;
         $.ajax({
             type: "post",
@@ -65,7 +108,8 @@
                 id : obj.id
             },
             success: function(data){
-    			alert(data.msg);
+                alert(data.msg);
+                getContent();
             },
             
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -104,37 +148,11 @@
 
         let div = document.createElement('div');
         div.innerText = text;
-        submit(div,text,"text");
+        var block = gengerate_block(div)
+        $('#textList').append(block);
+        submit(div,text,"text",block.id);
         
-        $('#textList').append(gengerate_block(div));
 
-    }
-
-    function login(obj){
-        var phonenum = $(obj).parent().prev().prev().children("#phonenum").val();
-        var password = $(obj).parent().prev().children("#password").val();
-        var url = "http://127.0.0.1:5000/login";
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: {
-                phonenum: phonenum,
-                password: password
-            },
-            success: function(data){
-    			alert(data.msg);
-                if(data.code == 0){
-                    var newurl = "http://127.0.0.1:5000/self%3Fphonenum%3D" + phonenum;
-                    window.location = newurl;
-                }
-    		},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert(XMLHttpRequest.status);
-                alert(XMLHttpRequest.readyState);
-                alert(textStatus);
-			    window.location = url;
-            }
-        });
     }
     </script>
 
@@ -163,9 +181,10 @@
                     reader.onload = function(e) {
                         let img = document.createElement('img');
                         img.src = e.target.result;
-                        submit(img,[f],"picture");
-                        document.getElementById('textList').appendChild(gengerate_block(img));
-                        
+                        var block = gengerate_block(img)
+                        document.getElementById('textList').appendChild(block);
+                        submit(img,[f],"picture",block.id);
+
                     };
 			
             }
