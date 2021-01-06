@@ -12,6 +12,20 @@
     <meta name="msapplication-tap-highlight" content="no">
     <link href="../static/css/main.css" rel="stylesheet">
     <script src="../static/js/jquery-3.5.1.min.js"></script>
+    <script src="../static/js/wsy.js"></script>
+    <script>
+        // wsy
+        $(document).ready(function () { getCollection(); }); 
+    </script>
+
+    <style>
+        .standard-input {
+            height: 100px;
+            width: 500px;
+            background-color: aliceblue;
+            margin-top: 1em;
+        }
+    </style>
 </head>
 
 <body>
@@ -362,9 +376,11 @@
                             </div>
                         </div>
                         <div class="main-card mb-3 card">
-                            在这里写表单
+                            <input type="text" name="" id="search">
+                            <input type="button" value="search" onclick="getContent()">
                         </div>
                     </div>
+                    <div id="textList" style="width: 10px;"></div>
                 </div>
             </div>
 <script type="text/javascript" src="../static/assets/scripts/main.js"></script>

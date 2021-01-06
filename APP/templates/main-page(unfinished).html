@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<style>
+.standard-input{
+	height:100px;
+    width:500px;
+    background-color: aliceblue;
+    margin-top: 1em;
+}
+.standard-box{
+	height:30px;
+    width:500px;
+    background-color:aqua;
+    margin-top: 1em;
+}
+</style>
+
+<script src="static/js/jquery-3.5.1.min.js"></script>
+<script src="http://api.html5media.info/1.1.8/html5media.min.js"></script>
+
+
+<script type="text/javascript">
+
+    var phonenum = "0";
+    
+
+
+    window.onload = function(){
+        getContent();
+    };
+    </script>
+
+    
+</head>
+<body>
+<input type="text" name="" id="search">
+<input type="button" value="search" onclick="getContent()">
+<br>
+<input type="text" name="" id="input">
+<input type="button" value="add text" onclick="add()">
+<br>
+
+<div id="textList" style="width: 10px;">
+
+</div>
+</body>
+</html>
