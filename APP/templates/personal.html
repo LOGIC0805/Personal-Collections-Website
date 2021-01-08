@@ -12,6 +12,7 @@
     <meta name="description" content="Huge selection of charts created with the React ChartJS Plugin">
     <meta name="msapplication-tap-highlight" content="no">
     <link href="../static/css/main.css" rel="stylesheet">
+    <link href="../static/css/charts.css" rel="stylesheet">
     <script src="../static/js/jquery-3.5.1.min.js"></script>
     <script src="../static/js/wsy.js"></script>
     <script>
@@ -431,12 +432,6 @@
                                     </i>我的集锦
                                 </a>
                             </li>
-                            <li>
-                                <a href="add.html">
-                                    <i class="metismenu-icon pe-7s-mouse">
-                                    </i>增加集锦
-                                </a>
-                            </li>
                             <li class="app-sidebar__heading">广场</li>
                             <li>
                                 <a href="square.html">
@@ -472,12 +467,80 @@
                             </div>
                         </div>
                     </div>
-                    <div class="main-card mb-3 card">
-                        <!-- wsy:创建集锦-->
-                        <input type="text" name="" id="myInput">
-                        <input type="button" value="add text" onclick="add('collection')">
+                    <div class="row">
+                        <!-- 集锦样例 -->
+                        <div class="col-md-4">
+                            <div class="card mb-3 bg-ripe-malin widget-chart text-white card-border">
+                                <div class="widget-chart-actions">
+                                    <div class="btn-group dropdown">
+                                        <button type="button" aria-haspopup="true" data-toggle="dropdown" aria-expanded="false" class="text-white btn btn-link">
+                                            <i class="fa fa-ellipsis-h"></i>
+                                        </button>
+                                        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu-lg dropdown-menu-right dropdown-menu">
+                                            <ul class="nav flex-column">
+                                                <li class="nav-item-header nav-item">操作</li>
+                                                <li class="nav-item">
+                                                    <a href="javascript:void(0);" class="nav-link">上移</a>
+                                                    <a href="javascript:void(0);" class="nav-link">下移</a>
+                                                    <a href="javascript:void(0);" class="nav-link">删除</a>
+                                                </li>
+                                                <li class="nav-item-divider nav-item"></li>
+                                                <li class="nav-item-header nav-item">修改名称及标签</li>
+                                                <li class="nav-item">
+                                                    <input type="text" autocomplete="off" placeholder="原来的名称" class="form-control input-mask-trigger">
+                                                </li>
+                                                <li class="nav-item">
+                                                    <input type="text" autocomplete="off" placeholder="原来的标签" class="form-control input-mask-trigger">
+                                                </li>
+                                                <li class="nav-item-btn nav-item">
+                                                    <button class="btn-wide btn-shadow btn btn-danger btn-sm" onclick="javascript:window.location.href='personal.html'">修改</button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="widget-numbers"><span>名称</span></div><br>
+                                <div class="widget-subheading"><i class="fa fa-tags"></i>&nbsp;&nbsp;<span>标签</span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-3 bg-ripe-malin widget-chart text-white card-border">
+                                <div class="widget-chart-actions">
+                                    <div class="btn-group dropdown">
+                                        <button type="button" aria-haspopup="true" data-toggle="dropdown" aria-expanded="false" class="text-white btn btn-link">
+                                            <i class="pe-7s-plus"></i>
+                                        </button>
+                                        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu-lg dropdown-menu-right dropdown-menu">
+                                            <ul class="nav flex-column">
+                                                <li class="nav-item-header nav-item">添加名称及标签</li>
+                                                <li class="nav-item">
+                                                    <input type="text" autocomplete="off" placeholder="名称" class="form-control input-mask-trigger">
+                                                </li>
+                                                <li class="nav-item">
+                                                    <input type="text" autocomplete="off" placeholder="标签" class="form-control input-mask-trigger">
+                                                </li>
+                                                <li class="nav-item-btn nav-item">
+                                                    <!-- 由此跳转到新建block页面 -->
+                                                    <button class="btn-wide btn-shadow btn btn-danger btn-sm" onclick="javascript:window.location.href='add.html'">新建</button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="widget-numbers"><span>新建集锦</span></div><br>
+                                <div class="widget-subheading"><i class="fa fa-tags"></i>&nbsp;&nbsp;<span>单击右上角添加集锦</span></div>
+                            </div>
+                        </div>
+
                         <!-- wsy:集锦列表 -->
-                        <div id="textList" style="width: 10px;"></div>
+                        <div id="textList">
+
+                        </div>
+                        <!-- wsy:创建集锦-->
+                        <div>
+                            <input type="text" name="" id="myInput">
+                            <input type="button" value="add text" onclick="add('collection')">
+                        </div>
                     </div>
                 </div>
             </div>
