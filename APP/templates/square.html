@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -13,10 +15,9 @@
     <link href="../static/css/charts.css" rel="stylesheet">
     <link href="../static/css/main.css" rel="stylesheet">
     <script src="../static/js/jquery-3.5.1.min.js"></script>
-    <script src="../static/js/wsy.js"></script>
     <script>
         // wsy
-        $(document).ready(function () { getCollection(); }); 
+        $(document).ready(function () { getContent('collection'); }); 
     </script>
 
     <style>
@@ -375,24 +376,25 @@
                                     <form>
                                         <i class="nav-link-icon fa fa-search"></i>&nbsp;
                                         <input type="text" name="" id="search">
-                                        <input type="button" value="search" onclick="getContent()">
+                                        <input type="button" value="search" onclick="getContent('collection')">
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" id="textList">
                             <!-- 集锦样例 -->
-                            <div class="col-md-4">
+                            <div class="col-md-4" v-for="item in textList":key="item.id" v-bind:item='item'>
                                 <div class="card mb-3 bg-arielle-smile widget-chart text-white card-border">
-                                    <div class="widget-numbers"><span>名称</span></div><br>
-                                    <div class="widget-subheading"><i class="fa fa-tags"></i>&nbsp;&nbsp;<span>标签</span></div>
+                                    <div class="widget-numbers" v-on:click="jump_to('add.html',item.name,id);"><span>{{item.name}}</span></div><br>
+                                    <div class="widget-subheading"><i class="fa fa-tags"></i>&nbsp;&nbsp;<span>{{item.tag}}</span></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div id="textList" style="width: 10px;"></div>
                 </div>
             </div>
 <script type="text/javascript" src="../static/assets/scripts/main.js"></script>
+<script src="../static/js/wsy.js"></script>
+
 </body>
 </html>
