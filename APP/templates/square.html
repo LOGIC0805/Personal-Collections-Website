@@ -387,7 +387,11 @@
                                 <div class="card mb-3 bg-arielle-smile widget-chart text-white card-border">
                                     <div class="widget-numbers" v-on:click="jump_to('add.html',item.name,id);"><span>{{item.name}}</span></div><br>
                                     <div class="widget-subheading"><i class="fa fa-tags"></i>&nbsp;&nbsp;<span>{{item.tag}}</span></div>
+                                    <div>点赞数：{{item.like}}</div>
+                                <button v-if="item.isLike!=true" v-on:click="like(item.order)">点赞</button>
+                                <button v-if="item.isLike==true" v-on:click="unlike(item.order)">取消点赞</button>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>

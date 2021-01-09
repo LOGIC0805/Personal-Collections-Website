@@ -13,13 +13,13 @@ function sendRequest(url_suffix, data, func) {
             func(data);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert(XMLHttpRequest.status);
-            alert(XMLHttpRequest.readyState);
-            alert(textStatus);
             console.log(this);
         }
     });
+    return;
 }
+
+
 
 function GetRequest() {
     var url = location.search; //获取url中"?"符后的字串
@@ -34,159 +34,49 @@ function GetRequest() {
     return theRequest;
 }
 
-function getBlock() {
-    var url = "block/select";
+function add(type) {
+    var content = page.content;
+    var name = page.name;
+    var tag = page.tag;
+    var order = page.textList.length;
+    if (type == 'block') {
+        if (content == null) {
+            return;
+        }
+        submit(content, 'text');
+        page.content = null;
+        return;
+    }
+    if (name == null) {
+        return;
+    }
     var data = new FormData();
-    data.append("collection_id",id);
-    sendRequest(url, data,
-        function (data) {
-            var list = $("#textList");
-            var blocks = data.blocks;
-            for (i in blocks) {
-                var content;
-                var block = blocks[i];
-                if (block.type == 'img') {
-                    content = document.createElement('img');
-                    content.src = block.content;
-                }
-                else if (block.type == 'text') {
-                    content = document.createElement('div');
-                    content.innerText = block.content;
-                }
-                else {
-                    content = document.createElement('div');
-                    content.innerText = block.content;
-                }
-                content.id = block.id;
-                var block = gengerate_block(content,"block");
-                list.append(block);
-            }
-        });
+    data.append('name', name);
+    data.append('tag', tag);
+    sendRequest('collection/add', data, function () {
+        getContent('collection');
+    });
+    page.content = null;
+    page.name = null;
+    page.tag = null;
 }
 
-function submit(obj, content, type, order) {
-    var url = "http://127.0.0.1:5000/block/add";
+
+function submit(content, type,order) {
+    var url = "block/add";
     var data = new FormData();
     data.append("content", content);
     data.append('type', type);
     data.append('order', order);
-    var that = obj;
-    $.ajax({
-        type: "post",
-        url: url,
-        data: data,
-        dataType: "json",
-        processData: false,
-        contentType: false,
-        success: function (data) {
-            that.id = data.id;
-        },
-
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert(XMLHttpRequest.status);
-            alert(XMLHttpRequest.readyState);
-            alert(textStatus);
-            console.log(this);
-        }
-    });
-}
-
-function swap(obj, dir,type) {
-    var url;
-    if (type == "block") {
-        url = "block/swap";
-    }
-    else {
-        url = "collection/swap";
-    }
-    var pos = obj.parentNode.id;
-    if (dir == 'up' && pos > 0) {
-        pos--;
-
-    }
-    if (dir == 'down' && dir < $("#textList").childElementCount - 1) {
-        pos++;
-    }
-    var data = new FormData();
-    data.append("new_order", pos);
-    data.append("id", obj.id);
-    if (type == "block") {
-        sendRequest(url, data, getBlock);    
-    }
-    else{
-        sendRequest(url, data, getCollection);
-    }
-    
-}
-function delete_block(obj,type) {
-    var url;
-    var data = new FormData();
-    data.append("collection_id", id);
-    if (type == "block") {
-        data.append("block_id", obj.id);
-        url = "block/delete";
-    }
-    else {
-        url = "collection/delete";
-    }
-    
-    sendRequest(url, data, function () { ;});
-    
-}
-function gengerate_block(content,type) {
-    var obj = document.createElement("div");
-    obj.className = "standard-input";
-    obj.id = document.getElementById('textList').childElementCount;
-    var up = document.createElement("div");
-    up.addEventListener("click", function () { swap(content, 'up',type); });
-    up.innerText = "swap up";
-    obj.appendChild(up);
-    obj.appendChild(content);
-    var down = document.createElement("div");
-    down.addEventListener("click", function () { swap(content, 'down',type) });
-    down.innerText = "swap down";
-    obj.appendChild(down);
-    var delete_item = document.createElement("div");
-    delete_item.addEventListener("click", function () { delete_block(content,type); });
-    delete_item.innerText = "delete";
-    obj.appendChild(delete_item);
-    return obj;
-}
-
-function add(type) {
-    var text = $("#myInput").val();
-    $("#myInput").val("");
-    if (text == "") {
-        return;
-    }
-    let div = document.createElement('div');
-    div.innerText = text;
-    var block = gengerate_block(div,type)
-    $('#textList').append(block);
-    var data = new FormData();
-    data.append('type', 'text');
-    data.append('name', text);
-    data.append('order', block.id);
-    data.append('content', text);
-
-    var url;
-
-    if (type == 'block') {
-        data.append('collection_id');
-        url = "block/add";
-    }
-    else {
-        url = "collection/add";
-    }
-
-    sendRequest(url,data,function (data) {
-        div.id = data.id;
+    sendRequest(url,data,function () {
+        getContent('block');
     })
 }
 
 
-function getCollection() {
-    var url = "collection/select";
+function getContent(type) {
+    var url;
+    url = type+"/select";
     var data = new FormData();
     if ("undefined" != typeof phonenum) {
         data.append('phonenum',phonenum);    
@@ -196,22 +86,155 @@ function getCollection() {
     if(name != ""){
         data.append('name',name);
     }
-    $("#textList").children().remove();
     sendRequest(url, data, function (data) {
-        console.log(data);
-        var list = $("#textList");
-        var collections = data.collections;
-        for (i in collections) {
-            var content = document.createElement('div');
-            var collection = collections[i];
-            content.innerText = collection.name;
-            content.onclick = function () {
-                console.log("?");
-                window.location.href = "add.html?id=" + collection.id + "&name=" + collection.name;
-            };
-            content.className = "standard-box";
-            content.id = collection.id;
-            $('#textList').append(gengerate_block(content,"collection"));
+        if (type == 'collection') {
+            page.textList = data.collections;
         }
+        else {
+            page.textList = data.blocks;
+        }
+        for (i in page.textList) {
+            page.textList[i]['order'] = i;
+            if (type == 'block' && page.textList[i]['type'] == 'picture') {
+                page.textList[i]['content'] = get_url(page.textList[i]['content']);
+            }
+
+        }
+        checkLike();
     });
 }
+
+async function checkLike() {
+    for (i in page.textList) {
+        (function (i) {
+            var dt = new FormData();
+            var obj = page.textList[i];
+            dt.append('collection_id', obj['id']);
+            sendRequest('collection/isLike', dt, function (data) {
+                obj['isLike'] = data.isLike;
+                Vue.set(page.textList, obj['order'], obj);
+            });
+        })(i);
+        
+    }
+}
+function get_url(f) {
+    let reader = new FileReader();
+    reader.readAsDataURL(f);
+    reader.onload = function(e) {
+        return e.target.result;
+    };
+}
+
+
+var page = new Vue({
+    el: "#textList",
+    data: {
+        textList: [],
+        id: null,
+        name: null,
+        tag: null,
+        content: null,
+    },
+    methods: {
+        swap: function (obj_id, dir,type) {
+            var url = type+'/swap';
+            
+            var obj = this.textList[obj_id];
+            var pos = obj_id;
+            var origin_pos = pos;
+            if (dir == 'up' && pos > 0) {
+                pos--;
+            }
+            if (dir == 'down' && pos < this.textList.length-1) {
+                pos++;
+            }
+            obj['order'] = pos;
+            var swap_obj = this.textList[pos];
+            swap_obj['order'] = origin_pos;
+            Vue.set(this.textList, origin_pos, swap_obj);
+            Vue.set(this.textList, pos, obj);
+
+            var data = new FormData();
+            data.append("new_order", pos);
+            data.append("id", obj.id);
+            if (type == "block") {
+                sendRequest(url, data, getBlock);    
+            }
+            else{
+                sendRequest(url, data, getCollection);
+            }
+            
+        },
+        delete_item: function(order,type) {
+            var url;
+            var data = new FormData();
+            data.append("collection_id", this.id);
+            console.log(order);
+            if (type == "block") {
+                data.append("block_id", this.textList[order]['id']);
+                url = "block/delete";
+            }
+            else {
+                url = "collection/delete";
+            }
+            this.textList.splice(this.textList[order], 1);
+            sendRequest(url, data, function () { ;});
+            
+        },
+        jump_to: function (url,block_name,collection_id) {
+            window.location.href = url+"?name="+block_name+"&id="+collection_id;
+        },
+        edit: function (order,type) {
+            var obj = this.textList[order]
+            var pos = obj['order'];
+            var url = type + '/update';
+            var data = new FormData();
+            if (type == 'collection') {
+                if (this.name != null) {
+                    obj['name'] = this.name;
+                    data.append('name', this.name);
+                }
+                if (this.tag != null) {
+                    obj['tag'] = this.tag;
+                    data.append('tag', this.tag);
+                }
+            }
+            else {
+                if (this.content != null) {
+                    obj['content'] = this.content;
+                    data.append('content', this.content);
+                }
+            }
+            
+            Vue.set(this.textList, pos, obj);
+            sendRequest(url, data, function () { ; });
+
+            this.name = null;
+            this.tag = null;
+            this.content = null;
+        },
+        add_item:function (type) {
+            add(type);
+        },
+        like: function (order) {
+            var obj = this.textList[order];
+            obj['like']++;
+            obj['isLike'] = true;
+            Vue.set(this.textList, order, obj);
+            var data = new FormData();
+            data.append('collection_id', obj['id']);
+            sendRequest('collection/like', data, function () { ; });
+        },
+        unlike: function (order) {
+            var obj = this.textList[order];
+            obj['like']--;
+            obj['isLike'] = false;
+            Vue.set(this.textList, order, obj);
+            var data = new FormData();
+            data.append('collection_id', obj['id']);
+            sendRequest('collection/unlike', data, function () { ; });
+        }
+    }
+}
+)
