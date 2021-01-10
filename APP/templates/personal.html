@@ -16,12 +16,7 @@
     <link href="../static/css/main.css" rel="stylesheet">
     <link href="../static/css/charts.css" rel="stylesheet">
     <script src="../static/js/jquery-3.5.1.min.js"></script>
-    <script>
-        // wsy:这个phonenum可能需要用什么传参的方式得到
-        var phonenum = "0";
 
-        $(document).ready(function () { getContent('collection'); }); 
-    </script>
     <!-- wsy:临时用样式 -->
     <style>
         .standard-input {
@@ -468,40 +463,52 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" id ="textList">
+                    <div class="row" id="textList">
                         <!-- 集锦块样例 -->
-                        <div class="col-md-4" v-for="item in textList":key="item.id" v-bind:item='item'>
+                        <div class="col-md-4" v-for="item in textList" :key="item.id" v-bind:item='item'>
                             <div class="card mb-3 bg-ripe-malin widget-chart text-white card-border">
                                 <div class="widget-chart-actions">
                                     <div class="btn-group dropdown">
-                                        <button type="button" aria-haspopup="true" data-toggle="dropdown" aria-expanded="false" class="text-white btn btn-link">
+                                        <button type="button" aria-haspopup="true" data-toggle="dropdown"
+                                            aria-expanded="false" class="text-white btn btn-link">
                                             <i class="fa fa-ellipsis-h"></i>
                                         </button>
-                                        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu-lg dropdown-menu-right dropdown-menu">
+                                        <div tabindex="-1" role="menu" aria-hidden="true"
+                                            class="dropdown-menu-lg dropdown-menu-right dropdown-menu">
                                             <ul class="nav flex-column">
                                                 <li class="nav-item-header nav-item">操作</li>
                                                 <li class="nav-item">
-                                                    <div v-on:click="swap(item.order,'up','collection');" class="nav-link">上移</div>
-                                                    <div v-on:click="swap(item.order,'down','collection');" class="nav-link">下移</div>
-                                                    <div v-on:click="delete_item(item.order,'collection');" class="nav-link">删除</div>
+                                                    <div v-on:click="swap(item.order,'up','collection');"
+                                                        class="nav-link">上移</div>
+                                                    <div v-on:click="swap(item.order,'down','collection');"
+                                                        class="nav-link">下移</div>
+                                                    <div v-on:click="delete_item(item.order,'collection');"
+                                                        class="nav-link">删除</div>
                                                 </li>
                                                 <li class="nav-item-divider nav-item"></li>
                                                 <li class="nav-item-header nav-item">修改名称及标签</li>
                                                 <li class="nav-item">
-                                                    <input type="text" autocomplete="off" v-model="name" v-bind:placeholder="item.name" class="form-control input-mask-trigger">
+                                                    <input type="text" autocomplete="off" v-model="name"
+                                                        v-bind:placeholder="item.name"
+                                                        class="form-control input-mask-trigger">
                                                 </li>
                                                 <li class="nav-item">
-                                                    <input type="text" autocomplete="off" v-model="tag" v-bind:placeholder="item.tag" class="form-control input-mask-trigger">
+                                                    <input type="text" autocomplete="off" v-model="tag"
+                                                        v-bind:placeholder="item.tag"
+                                                        class="form-control input-mask-trigger">
                                                 </li>
                                                 <li class="nav-item-btn nav-item">
-                                                    <button class="btn-wide btn-shadow btn btn-danger btn-sm" v-on:click="edit(item.order,'collection')">修改</button>
+                                                    <button class="btn-wide btn-shadow btn btn-danger btn-sm"
+                                                        v-on:click="edit(item.order,'collection')">修改</button>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="widget-numbers" v-on:click="jump_to('add.html',item.name,id);"><span>{{item.name}}</span></div><br>
-                                <div class="widget-subheading"><i class="fa fa-tags"></i>&nbsp;&nbsp;<span>{{item.tag}}</span></div>
+                                <div class="widget-numbers" v-on:click="jump_to('add.html',item.name,id);">
+                                    <span>{{item.name}}</span></div><br>
+                                <div class="widget-subheading"><i
+                                        class="fa fa-tags"></i>&nbsp;&nbsp;<span>{{item.tag}}</span></div>
                                 <div>点赞数：{{item.like}}</div>
                             </div>
                         </div>
@@ -509,28 +516,33 @@
                             <div class="card mb-3 bg-ripe-malin widget-chart text-white card-border">
                                 <div class="widget-chart-actions">
                                     <div class="btn-group dropdown">
-                                        <button type="button" aria-haspopup="true" data-toggle="dropdown" aria-expanded="false" class="text-white btn btn-link">
+                                        <button type="button" aria-haspopup="true" data-toggle="dropdown"
+                                            aria-expanded="false" class="text-white btn btn-link">
                                             <i class="pe-7s-plus"></i>
                                         </button>
-                                        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu-lg dropdown-menu-right dropdown-menu">
+                                        <div tabindex="-1" role="menu" aria-hidden="true"
+                                            class="dropdown-menu-lg dropdown-menu-right dropdown-menu">
                                             <ul class="nav flex-column">
                                                 <li class="nav-item-header nav-item">添加名称及标签</li>
                                                 <li class="nav-item">
-                                                    <input type="text" autocomplete="off" v-model="name" placeholder="名称" class="form-control input-mask-trigger">
+                                                    <input type="text" autocomplete="off" v-model="name"
+                                                        placeholder="名称" class="form-control input-mask-trigger">
                                                 </li>
                                                 <li class="nav-item">
-                                                    <input type="text" autocomplete="off" v-model="tag" placeholder="标签" class="form-control input-mask-trigger">
+                                                    <input type="text" autocomplete="off" v-model="tag" placeholder="标签"
+                                                        class="form-control input-mask-trigger">
                                                 </li>
                                                 <li class="nav-item-btn nav-item">
-                                                    <button class="btn-wide btn-shadow btn btn-danger btn-sm" 
-                                                    v-on:click="add_item('collection')">新建</button>
+                                                    <button class="btn-wide btn-shadow btn btn-danger btn-sm"
+                                                        v-on:click="add_item('collection')">新建</button>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="widget-numbers"><span>新建集锦</span></div><br>
-                                <div class="widget-subheading"><i class="fa fa-tags"></i>&nbsp;&nbsp;<span>单击右上角添加集锦</span></div>
+                                <div class="widget-subheading"><i
+                                        class="fa fa-tags"></i>&nbsp;&nbsp;<span>单击右上角添加集锦</span></div>
                             </div>
                         </div>
                     </div>
@@ -539,6 +551,35 @@
         </div>
         <script src="../static/js/wsy.js"></script>
         <script type="text/javascript" src="../static/assets/scripts/main.js"></script>
+        <script>
+            var cookie = {
+                setCookie: function (name, value) {
+                    document.cookie = name + '=' + value + ';';
+                },
+                getCookie: function (name) {
+                    var arr = document.cookie.split('; ');
+                    for (var i = 0; i < arr.length; i++) {
+                        var arr2 = arr[i].split('=');
+                        if (arr2[0] == name) {
+                            return arr2[1];
+                        }
+                    }
+
+                    return '';
+                },
+                removeCookie: function (name) {
+                    cookie.setCookie(name, '', -1)
+                }
+            };
+            // wsy:这个phonenum可能需要用什么传参的方式得到
+            var phonenum = cookie.getCookie("phonenum");
+            if(phonenum == ""){
+                window.location.href = "login.html";
+                //phonenum = "1";
+            }
+
+            $(document).ready(function () { getContent('collection'); }); 
+        </script>
 </body>
 
 </html>

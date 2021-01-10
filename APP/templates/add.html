@@ -467,7 +467,7 @@
                                 <div class="widget-chart-actions">
                                     <div class="btn-group dropdown">
                                         <button type="button" aria-haspopup="true" data-toggle="dropdown"
-                                            aria-expanded="false" class="text-white btn btn-link"  v-if="id=='null'">
+                                            aria-expanded="false" class="text-white btn btn-link"  v-if="id!='null'">
                                             <i class="fa fa-ellipsis-h"></i>
                                         </button>
                                         <div v-if="id==null"tabindex="-1" role="menu" aria-hidden="true"
@@ -504,7 +504,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4"  v-show="id=='null'">
+                        <div class="col-md-4"  v-show="id!='null'">
                             <div class="card mb-3 bg-mixed-hopes widget-chart text-white card-border">
                                 <div class="widget-chart-actions">
                                     <div class="btn-group dropdown">
