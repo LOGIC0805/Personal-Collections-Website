@@ -31,6 +31,18 @@ def get_collection():
     ret = {'collections':collections,'msg':'succuss'}
     return json_util.dumps(ret)
 
+@bp.route("/recommand", methods=["POST"])
+def get_collection():
+    collections = []
+    """
+    返回推荐的内容
+    collections.append({'id': '1', 'name': 'xuanz','like':1})
+    collections.append({'id': '2', 'name': 'mingg','like':2})
+    collections.append({'id': '3', 'name': 'wnqian','like':3})
+    """
+    ret = {'collections':collections,'msg':'succuss'}
+    return json_util.dumps(ret)
+
 @bp.route("/isLike", methods=["POST"])
 def islike(): 
     ret = {'msg': 'succuss'}

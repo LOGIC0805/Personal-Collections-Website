@@ -395,7 +395,25 @@
                             </div>
                             
                         </div>
+
+                        推荐
+                        <div class="row" id="recommend">
+                            <!-- 集锦样例 -->
+                            <div class="col-md-4" v-for="item in textList":key="item.id" v-bind:item='item'>
+                                <div class="card mb-3 bg-arielle-smile widget-chart text-white card-border">
+                                    <div class="widget-numbers" v-on:click="jump_to('add.html',item.name,id);"><span>{{item.name}}</span></div><br>
+                                    <div class="widget-subheading"><i class="fa fa-tags"></i>&nbsp;&nbsp;<span>{{item.tag}}</span></div>
+                                    <!-- 未点赞时的状态：点击超链接以增加赞 -->
+                                    <div class="widget-description text-danger" v-if="item.isLike!=true"><i class="pe-7s-like" v-on:click="like(item.order)"></i>&nbsp;<span class="pr-1">{{item.like}}</span></div>
+                                    <!-- 点赞后的状态：点击超链接以取消赞 -->
+                                    <div class="widget-description text-danger" v-if="item.isLike==true"><i class="fa fa-heart" v-on:click="unlike(item.order)"></i>&nbsp;<span class="pr-1">{{item.like}}</span></div>
+                                </div>
+                            </div>
+                            
+                        </div>
                     </div>
+
+                    
                 </div>
             </div>
 <script type="text/javascript" src="../static/assets/scripts/main.js"></script>

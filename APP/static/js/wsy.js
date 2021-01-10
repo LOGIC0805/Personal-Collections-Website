@@ -50,7 +50,7 @@ function add(type) {
         else {
             submit(content, 'text');
         }
-        
+
         page.content = null;
         return;
     }
@@ -69,12 +69,12 @@ function add(type) {
 }
 
 
-function submit(content, type,order) {
+function submit(content, type, order) {
     var url = "block/add";
     var data = new FormData();
     data.append("content", content);
     data.append('type', type);
-    sendRequest(url,data,function () {
+    sendRequest(url, data, function () {
         getContent('block');
     })
 }
@@ -82,27 +82,28 @@ function submit(content, type,order) {
 
 function getContent(type) {
     var url;
-    url = type+"/select";
+    url = type + "/select";
     var data = new FormData();
     if ("undefined" != typeof phonenum) {
-        data.append('phonenum',phonenum);    
+        data.append('phonenum', phonenum);
     }
     if (page.id != null) {
         data.append('id', page.id);
     }
-    
+
     var name = $("#search").val();
-    if(name != ""){
-        data.append('name',name);
+    if (name != "") {
+        data.append('name', name);
     }
     sendRequest(url, data, function (data) {
         if (type == 'collection') {
             page.textList = data.collections;
-            checkLike();
+            checkLike(page);
         }
         else {
             page.textList = data.blocks;
             getWebName();
+           
         }
         for (i in page.textList) {
             page.textList[i]['order'] = i;
@@ -111,47 +112,49 @@ function getContent(type) {
             }
 
         }
-        
-        
+
+
+
     });
 }
 
 async function getWebName() {
     for (i in page.textList) {
+        if (page.textList[i]['type'] != 'url') {
+            continue;
+        }
         (function (i) {
             var dt = new FormData();
             var obj = page.textList[i];
-            if (obj['type'] != 'url') {
-                continue;
-            }
+            
             dt.append('url', obj['content']);
             sendRequest('block/get_web_name', dt, function (data) {
                 obj['content'] = data.name;
                 Vue.set(page.textList, obj['order'], obj);
             });
         })(i);
-        
+
     }
 }
 
-async function checkLike() {
+async function checkLike(list) {
     for (i in page.textList) {
         (function (i) {
             var dt = new FormData();
-            var obj = page.textList[i];
+            var obj = list.textList[i];
             dt.append('collection_id', obj['id']);
             sendRequest('collection/isLike', dt, function (data) {
                 obj['isLike'] = data.isLike;
-                Vue.set(page.textList, obj['order'], obj);
+                Vue.set(list.textList, obj['order'], obj);
             });
         })(i);
-        
+
     }
 }
 function get_url(f) {
     let reader = new FileReader();
     reader.readAsDataURL(f);
-    reader.onload = function(e) {
+    reader.onload = function (e) {
         return e.target.result;
     };
 }
@@ -167,16 +170,16 @@ var page = new Vue({
         content: null,
     },
     methods: {
-        swap: function (obj_id, dir,type) {
-            var url = type+'/swap';
-            
+        swap: function (obj_id, dir, type) {
+            var url = type + '/swap';
+
             var obj = this.textList[obj_id];
             var pos = obj_id;
             var origin_pos = pos;
             if (dir == 'up' && pos > 0) {
                 pos--;
             }
-            if (dir == 'down' && pos < this.textList.length-1) {
+            if (dir == 'down' && pos < this.textList.length - 1) {
                 pos++;
             }
             obj['order'] = pos;
@@ -191,10 +194,10 @@ var page = new Vue({
             if (type == 'block') {
                 data.append('collection_id', page.id);
             }
-            sendRequest(url, data, getContent(type));    
+            sendRequest(url, data, getContent(type));
         },
-        delete_item: function(order,type) {
-            var url = type+'/delete';
+        delete_item: function (order, type) {
+            var url = type + '/delete';
             var data = new FormData();
             data.append("collection_id", this.id);
             console.log(order);
@@ -202,19 +205,19 @@ var page = new Vue({
                 data.append("block_id", this.textList[order]['id']);
             }
             this.textList.splice(this.textList[order], 1);
-            sendRequest(url, data, function () { ;});
+            sendRequest(url, data, function () { ; });
             for (i in page.textList) {
                 page.textList[i]['order'] = i;
                 if (type == 'block' && page.textList[i]['type'] == 'picture') {
                     page.textList[i]['content'] = get_url(page.textList[i]['content']);
                 }
-    
+
             }
         },
-        jump_to: function (url,block_name,collection_id) {
-            window.location.href = url+"?name="+block_name+"&id="+collection_id;
+        jump_to: function (url, block_name, collection_id) {
+            window.location.href = url + "?name=" + block_name + "&id=" + collection_id;
         },
-        edit: function (order,type) {
+        edit: function (order, type) {
             var obj = this.textList[order]
             var pos = obj['order'];
             var url = type + '/update';
@@ -239,7 +242,7 @@ var page = new Vue({
                     data.append('content', this.content);
                 }
             }
-            
+
             Vue.set(this.textList, pos, obj);
             sendRequest(url, data, function () { ; });
 
@@ -247,7 +250,7 @@ var page = new Vue({
             this.tag = null;
             this.content = null;
         },
-        add_item:function (type) {
+        add_item: function (type) {
             add(type);
         },
         like: function (order) {
@@ -272,7 +275,57 @@ var page = new Vue({
 }
 )
 
-function CHECK_URL(url){
+
+
+var recommend = new Vue({
+    el: "#recommend",
+    data: {
+        textList: [],
+        id: null,
+        name: null,
+        tag: null,
+        content: null,
+    },
+    created: function () {
+        var url;
+        url = "collection/recommend";
+        var data = new FormData();
+        sendRequest(url, data, function (data) {
+            recommend.textList = data.collections;
+            checkLike(this);
+            
+        for (i in recommend.textList) {
+            recommend.textList[i]['order'] = i;
+        }
+        });
+    },
+    methods: {
+        jump_to: function (url, block_name) {
+            window.location.href = url + "?name=" + block_name + "&id=null";
+        },
+        like: function (order) {
+            var obj = this.textList[order];
+            obj['like']++;
+            obj['isLike'] = true;
+            Vue.set(this.textList, order, obj);
+            var data = new FormData();
+            data.append('collection_id', obj['id']);
+            sendRequest('collection/like', data, function () { ; });
+        },
+        unlike: function (order) {
+            var obj = this.textList[order];
+            obj['like']--;
+            obj['isLike'] = false;
+            Vue.set(this.textList, order, obj);
+            var data = new FormData();
+            data.append('collection_id', obj['id']);
+            sendRequest('collection/unlike', data, function () { ; });
+        }
+    }
+}
+)
+
+function CHECK_URL(url) {
     //url= 协议://(ftp的登录信息)[IP|域名](:端口号)(/或?请求参数)
     var strRegex = '^((https|http|ftp)://)?'//(https或http或ftp):// 可有可无
         + '(([\\w_!~*\'()\\.&=+$%-]+: )?[\\w_!~*\'()\\.&=+$%-]+@)?' //ftp的user@  可有可无
@@ -285,9 +338,9 @@ function CHECK_URL(url){
         + '(:[0-9]{1,5})?' // 端口- :80 ,1-5位数字
         + '((/?)|' // url无参数结尾 - 斜杆或这没有
         + '(/[\\w_!~*\'()\\.;?:@&=+$,%#-]+)+/?)$';//请求参数结尾- 英文或数字和[]内的各种字符
-    
+
     var strRegex1 = '^(?=^.{3,255}$)((http|https|ftp)?:\/\/)?(www\.)?[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+(:\d+)*(\/)?(?:\/(.+)\/?$)?(\/\w+\.\w+)*([\?&]\w+=\w*|[\u4e00-\u9fa5]+)*$';
-    var re=new RegExp(strRegex,'i');//i不区分大小写
+    var re = new RegExp(strRegex, 'i');//i不区分大小写
     console.log(re);
     //将url做uri转码后再匹配，解除请求参数中的中文和空字符影响
     if (re.test(encodeURI(url))) {
