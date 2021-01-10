@@ -129,7 +129,7 @@ async function getWebName() {
             
             dt.append('url', obj['content']);
             sendRequest('block/get_web_name', dt, function (data) {
-                obj['content'] = data.name;
+                obj['title'] = data.name;
                 Vue.set(page.textList, obj['order'], obj);
             });
         })(i);

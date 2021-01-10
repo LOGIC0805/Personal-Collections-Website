@@ -499,8 +499,9 @@
                                     </div>
                                 </div>
                                 <div class="widget-numbers">
-                                    <span v-if="item.type!='picture'">{{item.content}}</span>
+                                    <span v-if="item.type=='text'">{{item.content}}</span>
                                     <img v-if="item.type=='picture'" v-bind:src="item.content" alt="" >
+                                    <a v-if="item.type=='url'" v-bind:href="item.content">{{item.title}}</a>
                                 </div>
                             </div>
                         </div>
