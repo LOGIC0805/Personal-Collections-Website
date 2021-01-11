@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text
+from sqlalchemy import Column, Integer, String, BLOB
 from APP.view.database import Base
 
 
@@ -35,12 +35,16 @@ class Collection(Base):
 class Block(Base):
     __tablename__ = 'block'
     id = Column(String(255), primary_key=True)
-    content = Column(String(255))
+    content_text = Column(String(255))
+    content_pic = Column(BLOB)
+    type = Column(Integer)
 
     # type = Column(String(255))
-    def __init__(self, id=None, content=None):
+    def __init__(self, id=None, content_text=None,content_pic=None):
         self.id = id
-        self.content = content
+        self.content_text = content_text
+        self.content_pic = content_pic
+        self.type = type
 
 
 class CollectionBlock(Base):
