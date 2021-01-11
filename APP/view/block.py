@@ -145,6 +145,12 @@ def edit():
             return json_util.dumps(ret)
         item = db_session.query(Block).filter(Block.id==block_id).first()
         type_item = item.type
+        if type_item == 'text' or type_item == 'url':
+            item.content_text = content
+        else:
+            item.content_pic = content
+        db_session.commit()
+
     except BaseException as e:
         print(str(e))
         ret = {'msg': 'failed!'}
