@@ -34,7 +34,7 @@
         function login(obj) {
             var phonenum = $(obj).parent().prev().prev().children("#phonenum").val();
             var password = $(obj).parent().prev().children("#password").val();
-            var url = "http://127.0.0.1:5000/login";
+            var url = "http://127.0.0.1:5000/bp_auth/login";
 
             $.ajax({
                 type: "POST",
@@ -45,15 +45,18 @@
                 },
                 success: function (data) {
                     cookie.setCookie('phonenum', phonenum, 30);
-                    var newurl = "personal.html";
-                    window.location = newurl;
-                    
+                    alert(data.msg);
+                    if(data.code != 1){
+                        window.location = "login.html";
+                    }else{
+                        window.location = "personal.html";
+                    }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert(XMLHttpRequest.status);
                     alert(XMLHttpRequest.readyState);
                     alert(textStatus);
-                    window.location = url;
+                    window.location = "login.html";
                 }
             });
         }
@@ -80,8 +83,8 @@
             </p>
         </div>
         <div class="reg-bar">
-            <a class="reg" href="http://127.0.0.1:5000/register">立即注册</a>
-            <a class="forget" href="http://127.0.0.1:5000/forget">忘记密码</a>
+            <a class="reg" href="register.html">立即注册</a>
+            <a class="forget" href="forget.html">忘记密码</a>
         </div>
     </div>
 </body>

@@ -8,9 +8,8 @@ bp_auth = Blueprint("bp_auth", __name__,url_prefix="/bp_auth")
 @bp_auth.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
-        datas = json.loads(request.get_data())
-        phonenum = datas['phonenum']
-        password = datas['password']
+        phonenum = request.form['phonenum']
+        password = request.form['password']
         name = ''
         msg = ''
 
@@ -82,11 +81,10 @@ def register():
 @bp_auth.route('/forget', methods=['POST', 'GET'])
 def forget():
     if request.method == 'POST':
-        datas = json.loads(request.get_data())
-        phonenum = datas['phonenum']
-        name = datas['name']
-        password = datas['password']
-        password1 = datas['password1']
+        phonenum = request.form['phonenum']
+        name = request.form['name']
+        password = request.form['password']
+        password1 = request.form['password1']
         msg = ''
 
         userlist = db_session.query(Users)
