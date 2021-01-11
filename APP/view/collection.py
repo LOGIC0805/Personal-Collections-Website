@@ -52,6 +52,7 @@ def get_collection():
             collection_tmp['name'] = item.name
             collection_tmp['like'] = item.like
             collection_tmp['tag'] = item.tag
+            collection_tmp['order'] = item.order
             collections.append(collection_tmp)
 
     except BaseException as e:
