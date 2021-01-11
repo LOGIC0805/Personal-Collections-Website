@@ -23,13 +23,13 @@ class Collection(Base):
     like = Column(Integer)
     order =Column(Integer)
 
-    def __init__(self, id=None, name=None, tag=None, phonenum=None, like=0):
+    def __init__(self, id=None, name=None, tag=None, phonenum=None, like=0,order=None):
         self.id = id
         self.name = name
         self.tag = tag
         self.phonenum = phonenum
         self.like = like
-        self.order = id
+        self.order = order
 
 
 class Block(Base):

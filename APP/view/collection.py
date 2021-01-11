@@ -3,7 +3,7 @@ from bson import json_util
 import random
 from APP.view.database import db_session
 from APP.view.model import Collection, UserLike
-
+import uuid
 bp_collection = Blueprint("collection", __name__, url_prefix="/collection")
 
 
@@ -12,10 +12,11 @@ def add_collection():
     name = request.form.get('name')
     tag = request.form.get('tag', None)
     phonenum = request.form.get('phonenum')
+    id = str(uuid.uuid1())
     try:
         count = Collection.query.count()
         print(count)
-        c = Collection(id=count, name=name, tag=tag, phonenum=phonenum)
+        c = Collection(id=id, name=name, tag=tag, phonenum=phonenum,order=count)
         db_session.add(c)
         db_session.commit()
     except BaseException as e:
@@ -23,7 +24,7 @@ def add_collection():
         ret = {'msg': 'failed!', 'name': name}
         return json_util.dumps(ret)
 
-    ret = {'msg': 'succuss', 'name': name, 'id': str(count + 1)}
+    ret = {'msg': 'succuss', 'name': name, 'id': id}
     """；
     插入最末尾
     ret['id'] = 
