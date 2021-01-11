@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, jsonify, session, Blueprint
 from bson import json_util
 
-bp = Blueprint("block", __name__,url_prefix="/block")
+bp_block = Blueprint("block", __name__,url_prefix="/block")
 
 
-@bp.route("/add", methods=["POST"])
+@bp_block.route("/add", methods=["POST"])
 def add_block():
     type = request.form.get('type')
     content = request.form.get("content")
@@ -16,7 +16,7 @@ def add_block():
     return json_util.dumps()
 
 
-@bp.route("/select", methods=["POST"])
+@bp_block.route("/select", methods=["POST"])
 def get_block():
     # 查询这个id的collection的block
     id = request.form.get('id')
@@ -31,7 +31,7 @@ def get_block():
 
 
 
-@bp.route("/delete", methods=["POST"])
+@bp_block.route("/delete", methods=["POST"])
 def delete():
     collection_id = request.form.get('collection_id')
     block_id = request.form.get('block_id')
@@ -41,7 +41,7 @@ def delete():
     ret = {'msg':'succuss'}
     return json_util.dumps(ret)
 
-@bp.route("/swap", methods=["POST"])
+@bp_block.route("/swap", methods=["POST"])
 def swap():
     id = request.form.get('id')
     collection_id = request.form.get('collection_id')
@@ -53,7 +53,7 @@ def swap():
     ret = {'msg':'succuss'}
     return json_util.dumps(ret)
 
-@bp.route("/edit", methods=["POST"])
+@bp_block.route("/edit", methods=["POST"])
 def edit():
     collection_id = request.form.get('collection_id')
     block_id = request.form.get('block_id')
@@ -66,7 +66,7 @@ def edit():
     return json_util.dumps(ret)
 
 
-@bp.route("/get_web_name", methods=["POST"])
+@bp_block.route("/get_web_name", methods=["POST"])
 def get_web_name():
     url = request.form.get('url')
     ret = {'msg':'succuss'}
