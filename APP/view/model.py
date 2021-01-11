@@ -51,3 +51,14 @@ class CollectionBlock(Base):
         self.id = id
 
         self.block_id = block_id
+
+
+class UserLike(Base):
+    __tablename__ = 'user_like'
+    phonenum = Column(String(255), primary_key=True)
+    collection_id = Column(String(255), primary_key=True)
+
+    def __init__(self, phonenum=None, collection_id=None):
+        self.phonenum = phonenum
+
+        self.collection_id = collection_id
