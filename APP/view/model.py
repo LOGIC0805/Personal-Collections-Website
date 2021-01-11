@@ -21,9 +21,9 @@ class Collection(Base):
     tag = Column(String(255))
     phonenum = Column(String(255))
     like = Column(Integer)
-    order =Column(Integer)
+    order = Column(Integer)
 
-    def __init__(self, id=None, name=None, tag=None, phonenum=None, like=0,order=None):
+    def __init__(self, id=None, name=None, tag=None, phonenum=None, like=0, order=None):
         self.id = id
         self.name = name
         self.tag = tag
@@ -38,13 +38,15 @@ class Block(Base):
     content_text = Column(String(255))
     content_pic = Column(BLOB)
     type = Column(Integer)
+    order = Column(Integer)
 
     # type = Column(String(255))
-    def __init__(self, id=None, content_text=None,content_pic=None):
+    def __init__(self, id=None, content_text=None, content_pic=None, order=None, type=None):
         self.id = id
         self.content_text = content_text
         self.content_pic = content_pic
         self.type = type
+        self.order = order
 
 
 class CollectionBlock(Base):
