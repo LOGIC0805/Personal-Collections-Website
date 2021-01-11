@@ -4,6 +4,7 @@ import random
 from APP.view.database import db_session
 from APP.view.model import Collection, UserLike
 import uuid
+
 bp_collection = Blueprint("collection", __name__, url_prefix="/collection")
 
 
@@ -16,7 +17,7 @@ def add_collection():
     try:
         count = Collection.query.count()
         print(count)
-        c = Collection(id=id, name=name, tag=tag, phonenum=phonenum,order=count)
+        c = Collection(id=id, name=name, tag=tag, phonenum=phonenum, order=count)
         db_session.add(c)
         db_session.commit()
     except BaseException as e:
@@ -195,6 +196,21 @@ def delete():
     """
     删除这个id的collection，记得刷新顺序
     """
+    try:
+        # 删除collection
+        item = db_session.query(Collection).filter(Collection.id == id).first()
+        order_item = item.order
+        db_session.delete(item)
+
+        # 刷新order顺序
+        db_session.query(Collection).filter(Collection.order > order_item).update(
+            {Collection.order: Collection.order - 1})
+        db_session.commit()
+    except BaseException as e:
+        print(str(e))
+        ret = {'msg': 'failed!'}
+        return json_util.dumps(ret)
+
     ret = {'msg': 'succuss'}
     return json_util.dumps(ret)
 
