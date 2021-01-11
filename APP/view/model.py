@@ -57,8 +57,9 @@ class UserLike(Base):
     __tablename__ = 'user_like'
     phonenum = Column(String(255), primary_key=True)
     collection_id = Column(String(255), primary_key=True)
+    state = Column(Integer)
 
-    def __init__(self, phonenum=None, collection_id=None):
+    def __init__(self, phonenum=None, collection_id=None, state=None):
         self.phonenum = phonenum
-
         self.collection_id = collection_id
+        self.state = state
