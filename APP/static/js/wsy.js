@@ -144,6 +144,7 @@ async function checkLike(list) {
             var dt = new FormData();
             var obj = list.textList[i];
             dt.append('collection_id', obj['id']);
+            dt.append('phonenum', phonenum);
             sendRequest('collection/isLike', dt, function (data) {
                 obj['isLike'] = data.isLike;
                 Vue.set(list.textList, obj['order'], obj);
@@ -261,6 +262,7 @@ var page = new Vue({
             Vue.set(this.textList, order, obj);
             var data = new FormData();
             data.append('collection_id', obj['id']);
+            data.append('phonenum', phonenum);
             sendRequest('collection/like', data, function () { ; });
         },
         unlike: function (order) {
@@ -270,6 +272,7 @@ var page = new Vue({
             Vue.set(this.textList, order, obj);
             var data = new FormData();
             data.append('collection_id', obj['id']);
+            data.append('phonenum', phonenum);
             sendRequest('collection/unlike', data, function () { ; });
         }
     }
@@ -311,6 +314,7 @@ var recommend = new Vue({
             Vue.set(this.textList, order, obj);
             var data = new FormData();
             data.append('collection_id', obj['id']);
+            data.append('phonenum', phonenum);
             sendRequest('collection/like', data, function () { ; });
         },
         unlike: function (order) {
@@ -320,6 +324,7 @@ var recommend = new Vue({
             Vue.set(this.textList, order, obj);
             var data = new FormData();
             data.append('collection_id', obj['id']);
+            data.append('phonenum', phonenum);
             sendRequest('collection/unlike', data, function () { ; });
         }
     }

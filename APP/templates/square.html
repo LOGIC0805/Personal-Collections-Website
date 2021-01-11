@@ -17,6 +17,31 @@
     <script src="../static/js/jquery-3.5.1.min.js"></script>
     <script>
         // wsy
+        var cookie = {
+                setCookie: function (name, value) {
+                    document.cookie = name + '=' + value + ';';
+                },
+                getCookie: function (name) {
+                    var arr = document.cookie.split('; ');
+                    for (var i = 0; i < arr.length; i++) {
+                        var arr2 = arr[i].split('=');
+                        if (arr2[0] == name) {
+                            return arr2[1];
+                        }
+                    }
+
+                    return '';
+                },
+                removeCookie: function (name) {
+                    cookie.setCookie(name, '', -1)
+                }
+            };
+            // wsy:这个phonenum可能需要用什么传参的方式得到
+            var phonenum = cookie.getCookie("phonenum");
+            if(phonenum == ""){
+                window.location.href = "login.html";
+                //phonenum = "1";
+            }
         $(document).ready(function () { getContent('collection'); }); 
     </script>
 
