@@ -58,6 +58,7 @@ function add(type) {
         return;
     }
     var data = new FormData();
+    data.append('phonenum', phonenum);
     data.append('name', name);
     data.append('tag', tag);
     sendRequest('collection/add', data, function () {
