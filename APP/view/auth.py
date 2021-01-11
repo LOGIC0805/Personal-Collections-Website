@@ -44,11 +44,10 @@ def login():
 @bp_auth.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
-        datas = json.loads(request.get_data())
-        phonenum = datas['phonenum']
-        name = datas['name']
-        password = datas['password']
-        password1 = datas['password1']
+        phonenum = request.form['phonenum']
+        username = request.form['username']
+        password = request.form['password']
+        password1 = request.form['password1']
         msg = ''
 
         userlist = db_session.query(Users)
@@ -63,10 +62,10 @@ def register():
         else:
             if phonenum != '' and password != '':
                 if password == password1:
-                    user = Users(phonenum=phonenum, name=name, password=password)
+                    user = Users(phonenum=phonenum, name=username, password=password)
                     db_session.add(user)
                     db_session.commit()
-                    return jsonify({'code': 1, 'name': name, 'phonenum': phonenum})
+                    return jsonify({'code': 1, 'name': username, 'phonenum': phonenum})
                 else:
                     msg = "两次输入密码不一致！"
                     return jsonify({'code': 2, 'msg': msg})
@@ -82,7 +81,7 @@ def register():
 def forget():
     if request.method == 'POST':
         phonenum = request.form['phonenum']
-        name = request.form['name']
+        username = request.form['username']
         password = request.form['password']
         password1 = request.form['password1']
         msg = ''
@@ -91,7 +90,7 @@ def forget():
         flag = 0
         for user in userlist:
             if user.phonenum == phonenum:
-                if user.name == name:
+                if user.name == username:
                     user.password = password
                     db_session.commit()
                     flag = 1
@@ -106,7 +105,7 @@ def forget():
                 if password == password1:
                     if flag == 1:
                         msg = "修改密码成功！"
-                        return jsonify({'code': 1, 'name': name, 'phonenum': phonenum})
+                        return jsonify({'code': 1, 'name': username, 'phonenum': phonenum})
                     else:
                         msg = "用户名输入错误！"
                         return jsonify({'code': 2, 'msg': msg})
