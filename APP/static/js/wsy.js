@@ -75,6 +75,7 @@ function submit(content, type, order) {
     var data = new FormData();
     data.append("content", content);
     data.append('type', type);
+    data.append('collection_id', page.id);
     sendRequest(url, data, function () {
         getContent('block');
     })
