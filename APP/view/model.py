@@ -21,6 +21,7 @@ class Collection(Base):
     tag = Column(String(255))
     phonenum = Column(String(255))
     like = Column(Integer)
+    order =Column(Integer)
 
     def __init__(self, id=None, name=None, tag=None, phonenum=None, like=0):
         self.id = id
@@ -28,6 +29,7 @@ class Collection(Base):
         self.tag = tag
         self.phonenum = phonenum
         self.like = like
+        self.order = id
 
 
 class Block(Base):
