@@ -15,7 +15,7 @@ def add_collection():
     try:
         count = Collection.query.count()
         print(count)
-        c = Collection(id=count + 1, name=name, tag=tag, phonenum=phonenum)
+        c = Collection(id=count, name=name, tag=tag, phonenum=phonenum)
         db_session.add(c)
         db_session.commit()
     except BaseException as e:
@@ -170,6 +170,20 @@ def swap():
     把这个id的collection和顺序是order的collection交换
     编号从零开始，有可能是自己
     """
+    try:
+        item1 = db_session.query(Collection).filter(Collection.id == id).first()
+        item2 = db_session.query(Collection).filter(Collection.order == order).first()
+        order1 = item1.order
+        # order2 = item2.order
+        id2 = item2.id
+        db_session.query(Collection).filter(Collection.id == id).update({Collection.order: order})
+        db_session.query(Collection).filter(Collection.id == id2).update({Collection.order: order1})
+        db_session.commit()
+    except BaseException as e:
+        print(str(e))
+        ret = {'msg': 'failed!'}
+        return json_util.dumps(ret)
+
     ret = {'msg': 'succuss'}
     return json_util.dumps(ret)
 
