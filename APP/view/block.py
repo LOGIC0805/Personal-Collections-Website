@@ -77,6 +77,19 @@ def delete():
     """
     删除这个id的collection的block，记得刷新顺序
     """
+    try:
+        db_session.query(CollectionBlock).filter(CollectionBlock.id == collection_id,
+                                                 CollectionBlock.block_id == block_id).delete()
+        item = db_session.query(Block).filter(Block.id == block_id).first()
+        order_item = item.order
+        db_session.delete(item)
+        db_session.query(Block).filter(Block.order > order_item).update({Block.order: Block.order - 1})
+        db_session.commit()
+    except BaseException as e:
+        print(str(e))
+        ret = {'msg': 'failed!'}
+        return json_util.dumps(ret)
+
     ret = {'msg': 'succuss'}
     return json_util.dumps(ret)
 
