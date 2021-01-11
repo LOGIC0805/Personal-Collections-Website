@@ -48,6 +48,24 @@ def get_block():
     blocks.append({'id': '2', 'content': 'mingg','type':'url'})
     blocks.append({'id': '3', 'content': 'wnqian','type':'picture'})
     """
+    try:
+        row = db_session.query(Block).join(CollectionBlock, CollectionBlock.block_id == Block.id).filter(
+            CollectionBlock.id == id).all()
+        for item in row:
+            block_tmp = {}
+            block_tmp['id'] = item.id
+            block_tmp['type'] = item.type
+            if item.type == 'url' or item.type == 'text':
+                block_tmp['content'] = item.content_text
+            else:
+                block_tmp['content'] = item.content_pic
+            block_tmp['order'] = item.order
+            blocks.append(block_tmp)
+    except BaseException as e:
+        print(str(e))
+        ans = {'msg': 'failed'}
+        return json_util.dumps(ans)
+
     ans = {'blocks': blocks, 'msg': 'succuss'}
     return json_util.dumps(ans)
 
