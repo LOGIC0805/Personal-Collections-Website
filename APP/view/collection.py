@@ -224,5 +224,16 @@ def edit():
     """
     全部是none的情况请直接返回
     """
+    if id is None and name is None and tag is None:
+        ret = {'msg': 'id,name,tag are all none!'}
+        return json_util.dumps(ret)
+    try:
+        db_session.query(Collection).filter(Collection.id == id).update({Collection.name: name, Collection.tag: tag})
+        db_session.commit()
+    except BaseException as e:
+        print(str(e))
+        ret = {'msg': 'failed!'}
+        return json_util.dumps(ret)
+
     ret = {'msg': 'succuss'}
     return json_util.dumps(ret)
