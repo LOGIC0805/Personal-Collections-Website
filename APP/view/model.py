@@ -20,12 +20,14 @@ class Collection(Base):
     name = Column(String(255))
     tag = Column(String(255))
     phonenum = Column(String(255))
+    like = Column(Integer)
 
-    def __init__(self, id=None, name=None, tag=None, phonenum=None):
+    def __init__(self, id=None, name=None, tag=None, phonenum=None, like=0):
         self.id = id
         self.name = name
         self.tag = tag
         self.phonenum = phonenum
+        self.like = like
 
 
 class Block(Base):
