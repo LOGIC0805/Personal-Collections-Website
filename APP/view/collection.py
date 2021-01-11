@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify, session, Blueprint
 from bson import json_util
 import random
 from APP.view.database import db_session
-from APP.view.model import Collection
+from APP.view.model import Collection, UserLike
 
 bp_collection = Blueprint("collection", __name__, url_prefix="/collection")
 
@@ -94,18 +94,26 @@ def recommand_collection():
 
 @bp_collection.route("/isLike", methods=["POST"])
 def islike():
-    ret = {'msg': 'succuss'}
     id = request.form.get('collection_id')
+    phonenum = request.form.get('phonenum')
     """
     返回当前用户（用session确定）对这个id的collection是否有点赞
     ans['isLike'] = True
     """
+    row = db_session.query(UserLike).filter(UserLike.collection_id == id, UserLike.phonenum == phonenum,
+                                            UserLike.state == 1).first()
+    print(row, id, phonenum)
+    if row is not None:
+        islike = True
+    else:
+        islike = False
+    ret = {'msg': 'succuss', 'isLike': islike}
     return json_util.dumps(ret)
 
 
 @bp_collection.route("/like", methods=["POST"])
 def get_like():
-    id = request.form.get('colllection_id')
+    id = request.form.get('collection_id')
     """
     增加点赞数
     更新用户的点赞状态
