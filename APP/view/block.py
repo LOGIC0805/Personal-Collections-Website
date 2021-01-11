@@ -103,6 +103,25 @@ def swap():
     把这个collection_id的collection的这个id的块和顺序是order的块交换
     编号从零开始，有可能是自己
     """
+    try:
+        row = db_session.query(CollectionBlock).filter(CollectionBlock.id == collection_id,
+                                                       CollectionBlock.block_id == id).first()
+        if row is None:
+            ret = {'msg': 'collection_id and block_id error!'}
+            return json_util.dumps(ret)
+
+        item1 = db_session.query(Block).filter(Block.id == id).first()
+        item2 = db_session.query(Block).filter(Block.order == order).first()
+        order1 = item1.order
+        # order2 = item2.order
+        id2 = item2.id
+        db_session.query(Block).filter(Block.id == id).update({Block.order: order})
+        db_session.query(Block).filter(Block.id == id2).update({Block.order: order1})
+        db_session.commit()
+    except BaseException as e:
+        print(str(e))
+        ret = {'msg': 'failed!'}
+        return json_util.dumps(ret)
     ret = {'msg': 'succuss'}
     return json_util.dumps(ret)
 
@@ -112,10 +131,26 @@ def edit():
     collection_id = request.form.get('collection_id')
     block_id = request.form.get('block_id')
     content = request.form.get('content', None)
-
     """
     content = none的情况请直接返回
     """
+    if content is None:
+        ret = {'msg': 'content is None!'}
+        return json_util.dumps(ret)
+    try:
+        row = db_session.query(CollectionBlock).filter(CollectionBlock.id == collection_id,
+                                                       CollectionBlock.block_id == block_id).first()
+        if row is None:
+            ret = {'msg': 'collection_id and block_id error!'}
+            return json_util.dumps(ret)
+        item = db_session.query(Block).filter(Block.id==block_id).first()
+        type_item = item.type
+    except BaseException as e:
+        print(str(e))
+        ret = {'msg': 'failed!'}
+        return json_util.dumps(ret)
+
+
     ret = {'msg': 'succuss'}
     return json_util.dumps(ret)
 
