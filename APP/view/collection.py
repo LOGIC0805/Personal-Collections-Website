@@ -134,13 +134,22 @@ def get_like():
 
 @bp_collection.route("/unlike", methods=["POST"])
 def get_unlike():
-    id = request.form.get('colllection_id')
+    id = request.form.get('collection_id')
     phonenum = request.form.get('phonenum')
     """
     减少点赞数
     更新用户的点赞状态
     """
     ret = {'msg': 'succuss'}
+    try:
+        db_session.query(UserLike).filter(UserLike.collection_id == id, UserLike.phonenum == phonenum).update(
+            {UserLike.state: 0})
+        db_session.query(Collection).filter(Collection.id == id).update({Collection.like: Collection.like - 1})
+        db_session.commit()
+    except BaseException as e:
+        print(str(e))
+        ret = {'msg': 'failed!'}
+        return json_util.dumps(ret)
     return json_util.dumps(ret)
 
 
