@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, session, Blueprint
 from bson import json_util
-
+import random
 from APP.view.database import db_session
 from APP.view.model import Collection
 
@@ -44,7 +44,8 @@ def get_collection():
     collections.append({'id': '3', 'name': 'wnqian','like':3})
     """
     try:
-        row = db_session.query(Collection).filter(Collection.name.like('%'+name+'%'), Collection.phonenum == phonenum).all()
+        row = db_session.query(Collection).filter(Collection.name.like('%' + name + '%'),
+                                                  Collection.phonenum == phonenum).all()
         for item in row:
             collection_tmp = {}
             collection_tmp['id'] = item.id
@@ -71,15 +72,18 @@ def recommand_collection():
     collections.append({'id': '3', 'name': 'wnqian','like':3})
     """
     try:
-        row = db_session.query(Collection).filter(Collection.name.like('%'+name+'%'), Collection.phonenum == phonenum).all()
+        row = db_session.query(Collection).filter().all()
         for item in row:
             collection_tmp = {}
             collection_tmp['id'] = item.id
             collection_tmp['name'] = item.name
             collection_tmp['like'] = item.like
             collection_tmp['tag'] = item.tag
-            collections.append(collection_tmp)
-
+            random_int = random.randint(0, 9)
+            if random_int <= 4:
+                continue
+            else:
+                collections.append(collection_tmp)
     except BaseException as e:
         print(str(e))
         ret = {'msg': 'failed!'}
