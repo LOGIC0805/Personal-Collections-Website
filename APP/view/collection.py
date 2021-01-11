@@ -122,9 +122,17 @@ def get_like():
     ret = {'msg': 'succuss'}
     try:
         s = UserLike(phonenum=phonenum, collection_id=id, state=1)
-        db_session.add(s)
-        db_session.query(Collection).filter(Collection.id == id).update({Collection.like: Collection.like + 1})
-        db_session.commit()
+        row = db_session.query(UserLike).filter(UserLike.collection_id == id, UserLike.phonenum == phonenum).first()
+        if row is None:
+            db_session.add(s)
+            db_session.query(Collection).filter(Collection.id == id).update({Collection.like: Collection.like + 1})
+            db_session.commit()
+        else:
+            db_session.query(UserLike).filter(UserLike.collection_id == id, UserLike.phonenum == phonenum).update(
+                {UserLike.state: 1})
+            db_session.query(Collection).filter(Collection.id == id).update({Collection.like: Collection.like + 1})
+            db_session.commit()
+
     except BaseException as e:
         print(str(e))
         ret = {'msg': 'failed!'}
