@@ -43,6 +43,20 @@ def get_collection():
     collections.append({'id': '2', 'name': 'mingg','like':2})
     collections.append({'id': '3', 'name': 'wnqian','like':3})
     """
+    try:
+        row = db_session.query(Collection).filter(Collection.name.like('%'+name+'%'), Collection.phonenum == phonenum).all()
+        for item in row:
+            collection_tmp = {}
+            collection_tmp['id'] = item.id
+            collection_tmp['name'] = item.name
+            collection_tmp['like'] = item.like
+            collection_tmp['tag'] = item.tag
+            collections.append(collection_tmp)
+
+    except BaseException as e:
+        print(str(e))
+        ret = {'msg': 'failed!'}
+        return json_util.dumps(ret)
     ret = {'collections': collections, 'msg': 'succuss'}
     return json_util.dumps(ret)
 
@@ -56,6 +70,20 @@ def recommand_collection():
     collections.append({'id': '2', 'name': 'mingg','like':2})
     collections.append({'id': '3', 'name': 'wnqian','like':3})
     """
+    try:
+        row = db_session.query(Collection).filter(Collection.name.like('%'+name+'%'), Collection.phonenum == phonenum).all()
+        for item in row:
+            collection_tmp = {}
+            collection_tmp['id'] = item.id
+            collection_tmp['name'] = item.name
+            collection_tmp['like'] = item.like
+            collection_tmp['tag'] = item.tag
+            collections.append(collection_tmp)
+
+    except BaseException as e:
+        print(str(e))
+        ret = {'msg': 'failed!'}
+        return json_util.dumps(ret)
     ret = {'collections': collections, 'msg': 'succuss'}
     return json_util.dumps(ret)
 
