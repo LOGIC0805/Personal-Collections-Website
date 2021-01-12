@@ -134,7 +134,7 @@ function getContent(type) {
             page.textList[i]['order'] = i;
             if (type == 'block' && page.textList[i]['type'] == 'picture') {
                 console.log(page.textList[i]);
-                page.textList[i]['content'] = get_url(page.textList[i]['content']);
+             //   page.textList[i]['content'] = get_url(i);
             }
 
         }
@@ -178,13 +178,19 @@ async function checkLike(list) {
 
     }
 }
-function get_url(f) {
+function get_url(i) {
+    var data = new FormData();
+    data.append('pic',page.textList[i]['content']['$binary']);
+    sendRequest('block/get_pic',data,function(f){
+    console.log(f);
     let reader = new FileReader();
     console.log(f);
     reader.readAsDataURL(f);
     reader.onload = function (e) {
         return e.target.files[0] || e.dataTransfer.files[0];
     };
+    })
+
 }
 
 

@@ -1,12 +1,15 @@
-from flask import Flask, render_template, request, jsonify, session, Blueprint
+from flask import Flask, render_template, request, jsonify, session, Blueprint ,send_file
 from bson import json_util
 import uuid
-
+import os
+import io
+from PIL import Image
 from APP.view.database import db_session
 from APP.view.model import Block, CollectionBlock
 
 bp_block = Blueprint("block", __name__, url_prefix="/block")
 
+basedir = os.path.abspath('.')
 
 @bp_block.route("/add", methods=["POST"])
 def add_block():
@@ -22,8 +25,12 @@ def add_block():
             content = request.form.get("content")
             b = Block(type=type, content_text=content, order=count, id=id)
         else:
-            content = request.files.get("content")
-            b = Block(type=type, content_pic=content, order=count, id=id)
+            img = request.files.get("content")
+            print(img)
+            path = basedir + "/APP/static/img/"
+            file_path = path + id + '.png'
+            img.save(file_path)
+            b = Block(type=type, content_text='static/img/'+id+'.png', order=count, id=id)
         db_session.add(b)
         cb = CollectionBlock(id=collection_id, block_id=id)
         db_session.add(cb)
@@ -60,7 +67,7 @@ def get_block():
             if item.type == 'url' or item.type == 'text':
                 block_tmp['content'] = item.content_text
             else:
-                block_tmp['content'] = item.content_pic
+                block_tmp['content'] = item.content_text
             block_tmp['order'] = item.order
             blocks.append(block_tmp)
     except BaseException as e:
@@ -172,3 +179,14 @@ def get_web_name():
     """
 
     return json_util.dumps(ret)
+
+@bp_block.route("/get_pic", methods=["POST"])
+def get_pic():
+    img = bytes(request.form.get('pic'), encoding = "utf8")
+
+    byte_stream = io.BytesIO(img)
+    im2 = Image.open(byte_stream)
+    ret = {'msg': 'succuss'}
+    im2.save(request.form.get('pic')[20:]+".gif", "GIF")
+    ret['url'] = request.form.get('pic')[20:]+".gif"
+    return ret
