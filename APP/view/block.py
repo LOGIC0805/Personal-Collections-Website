@@ -3,9 +3,10 @@ from bson import json_util
 import uuid
 import os
 import io
-from PIL import Image
 from APP.view.database import db_session
 from APP.view.model import Block, CollectionBlock
+import requests
+from bs4 import BeautifulSoup
 
 bp_block = Blueprint("block", __name__, url_prefix="/block")
 
@@ -174,19 +175,18 @@ def edit():
 def get_web_name():
     url = request.form.get('url')
     ret = {'msg': 'succuss'}
-    """
+    html = requests.get(url)
+    html.encoding = 'utf-8'
+    soup = BeautifulSoup(html.text, "html.parser")
+    title = soup.find('title').text
+    """	    
     ret['name'] = url对应的网站的title，没有就返回url
-    """
+    """	    
+
+    if title != None:
+        ret['name'] = title
+    else:
+        ret['name'] = url
 
     return json_util.dumps(ret)
 
-@bp_block.route("/get_pic", methods=["POST"])
-def get_pic():
-    img = bytes(request.form.get('pic'), encoding = "utf8")
-
-    byte_stream = io.BytesIO(img)
-    im2 = Image.open(byte_stream)
-    ret = {'msg': 'succuss'}
-    im2.save(request.form.get('pic')[20:]+".gif", "GIF")
-    ret['url'] = request.form.get('pic')[20:]+".gif"
-    return ret
