@@ -16,6 +16,7 @@
     <link href="../static/css/charts.css" rel="stylesheet">
     <link href="../static/css/main.css" rel="stylesheet">
     <script src="../static/js/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/showdown-master/dist/showdown.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             getContent('block');
@@ -26,10 +27,6 @@
     <!-- wsy:临时用样式 -->
     <style>
         .standard-input {
-            height: 100px;
-            width: 500px;
-            background-color: aliceblue;
-            margin-top: 1em;
         }
     </style>
 </head>
@@ -463,11 +460,11 @@
                     <div class="row" id="textList">
                         <!-- 集锦块样例 -->
                         <div class="col-md-4" v-for="item in textList" :key="item.id" v-bind:item='item'>
-                            <div class="card mb-3 bg-mixed-hopes widget-chart text-white card-border">
+                            <div class="main-card mb-3 card">
                                 <div class="widget-chart-actions">
                                     <div class="btn-group dropdown">
                                         <button type="button" aria-haspopup="true" data-toggle="dropdown"
-                                            aria-expanded="false" class="text-white btn btn-link"  v-if="id!='null'">
+                                            aria-expanded="false" class="btn btn-link"  v-if="id!='null'">
                                             <i class="fa fa-ellipsis-h"></i>
                                         </button>
                                         <div v-if="id!=null"tabindex="-1" role="menu" aria-hidden="true"
@@ -486,9 +483,9 @@
                                                 <li class="nav-item-header nav-item" v-if="item.type!='picture' ">修改名称
                                                 </li>
                                                 <li class="nav-item" v-if="item.type!='picture' ">
-                                                    <input type="text" autocomplete="off" v-model="content"
-                                                        v-bind:placeholder="item.content"
-                                                        class="form-control input-mask-trigger">
+                                                    <textarea autocomplete="off" v-model="item.content"
+
+                                                        class="form-control input-mask-trigger" ></textarea>
                                                 </li>
                                                 <li class="nav-item-btn nav-item" v-if="item.type!='picture' ">
                                                     <button class="btn-wide btn-shadow btn btn-danger btn-sm"
@@ -498,19 +495,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="widget-numbers">
-                                    <span v-if="item.type=='text'">{{item.content}}</span>
-                                    <img v-if="item.type=='picture'" v-bind:src="item.content" alt="" >
+                                <div class="card-body">
+                                    <div v-if="item.type=='text'"><div v-html="item.html"></div></div>
+                                    <div class="standard-output"></div>
+                                    <img v-if="item.type=='picture'" v-bind:src="item.content" alt="" style="max-width:300px;">
                                     <a v-if="item.type=='url'" v-bind:href="item.content">{{item.title}}</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4"  v-show="id!='null'">
-                            <div class="card mb-3 bg-mixed-hopes widget-chart text-white card-border">
+                            <div class="main-card mb-3 widget-chart card card-border">
                                 <div class="widget-chart-actions">
                                     <div class="btn-group dropdown">
                                         <button type="button" aria-haspopup="true" data-toggle="dropdown"
-                                            aria-expanded="false" class="text-white btn btn-link">
+                                            aria-expanded="false" class="btn btn-link">
                                             <i class="pe-7s-plus"></i>
                                         </button>
                                         <div tabindex="-1" role="menu" aria-hidden="true"

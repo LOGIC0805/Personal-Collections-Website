@@ -4,7 +4,6 @@ from APP.view.block import bp_block
 from APP.view.start import bp_start
 from APP.view.collection import bp_collection
 from APP.view.database import init_db
-from flask_cors import *
 
 
 class CustomFlask(Flask):
@@ -15,7 +14,6 @@ class CustomFlask(Flask):
         variable_end_string='%%',
     ))
 app = CustomFlask(__name__)
-CORS(app, supports_credentials=True)
 app.register_blueprint(bp_auth)
 app.register_blueprint(bp_start)
 app.register_blueprint(bp_block)

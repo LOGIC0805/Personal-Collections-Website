@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ccd18ece-a4ed-4116-ada0-c6de56a9afb1" name="默认的" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APP/static/js/wsy.js" beforeDir="false" afterPath="$PROJECT_DIR$/APP/static/js/wsy.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APP/templates/personal.html" beforeDir="false" afterPath="$PROJECT_DIR$/APP/templates/personal.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APP/templates/square.html" beforeDir="false" afterPath="$PROJECT_DIR$/APP/templates/square.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APP/view/block.py" beforeDir="false" afterPath="$PROJECT_DIR$/APP/view/block.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APP/view/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/APP/view/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APP/templates/add.html" beforeDir="false" afterPath="$PROJECT_DIR$/APP/templates/add.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

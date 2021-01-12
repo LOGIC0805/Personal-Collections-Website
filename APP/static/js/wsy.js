@@ -132,15 +132,8 @@ function getContent(type) {
         }
         for (i in page.textList) {
             page.textList[i]['order'] = i;
-            if (type == 'block' && page.textList[i]['type'] == 'picture') {
-                console.log(page.textList[i]);
-             //   page.textList[i]['content'] = get_url(i);
-            }
-
         }
-
-
-
+        compile();
     });
 }
 
@@ -256,7 +249,7 @@ var page = new Vue({
         edit: function (order, type) {
             var obj = this.textList[order]
             var pos = obj['order'];
-            var url = type + '/update';
+            var url = type + '/edit';
             var data = new FormData();
             if (type == 'collection') {
                 data.append('collection_id', obj['id']);
@@ -273,9 +266,12 @@ var page = new Vue({
             else {
                 data.append('collection_id', this.id);
                 data.append('block_id', obj['id']);
-                if (this.content != null) {
-                    obj['content'] = this.content;
-                    data.append('content', this.content);
+                if (obj['content'] != null) {
+                    data.append('content', obj['content']);
+                }
+                if(obj['type'] == 'text'){
+                var converter = new showdown.Converter();
+                obj['html'] = converter.makeHtml(obj['content']);
                 }
             }
 
@@ -390,4 +386,23 @@ function CHECK_URL(url) {
     } else {
         return (false);
     }
+}
+
+function compile(){
+    var list = document.getElementsByClassName("standard-input");
+
+    console.log(list,list.length);
+    for(i in page.textList){
+        if(page.textList[i]['type']!='text'){
+            page.textList[i]['html'] = null;
+            continue;
+        }
+        var text = page.textList[i]['content'];
+        console.log(i);
+        var converter = new showdown.Converter();
+        var html = converter.makeHtml(text);
+        page.textList[i]['html'] = html;
+    }
+
+
 }
