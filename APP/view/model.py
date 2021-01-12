@@ -37,7 +37,7 @@ class Block(Base):
     id = Column(String(255), primary_key=True)
     content_text = Column(String(255))
     content_pic = Column(BLOB)
-    type = Column(Integer)
+    type = Column(String(255))
     order = Column(Integer)
 
     # type = Column(String(255))
