@@ -53,7 +53,7 @@ class CollectionBlock(Base):
     __tablename__ = 'collection_block'
     id = Column(String(255), primary_key=True)
     # password = Column(String(255))
-    block_id = Column(String(255))
+    block_id = Column(String(255), primary_key=True)
 
     def __init__(self, id=None, block_id=None):
         self.id = id

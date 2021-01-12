@@ -97,6 +97,8 @@ function submit(content, type, order) {
     data.append("content", content);
     data.append('type', type);
     data.append('collection_id', page.id);
+    console.log(data.get('content'));
+
     sendRequest(url, data, function () {
         getContent('block');
     })
@@ -131,6 +133,7 @@ function getContent(type) {
         for (i in page.textList) {
             page.textList[i]['order'] = i;
             if (type == 'block' && page.textList[i]['type'] == 'picture') {
+                console.log(page.textList[i]);
                 page.textList[i]['content'] = get_url(page.textList[i]['content']);
             }
 
@@ -177,9 +180,10 @@ async function checkLike(list) {
 }
 function get_url(f) {
     let reader = new FileReader();
+    console.log(f);
     reader.readAsDataURL(f);
     reader.onload = function (e) {
-        return e.target.result;
+        return e.target.files[0] || e.dataTransfer.files[0];
     };
 }
 
@@ -331,7 +335,7 @@ var recommend = new Vue({
         jump_to: function (url, block_name) {
             cookie.setCookie('name',block_name);
             cookie.setCookie('id',null);
-            window.location.href = "%%url_for('"+url+"')%%";
+            window.location.href = "/add";
         },
         like: function (order) {
             var obj = this.textList[order];

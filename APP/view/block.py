@@ -11,16 +11,18 @@ bp_block = Blueprint("block", __name__, url_prefix="/block")
 @bp_block.route("/add", methods=["POST"])
 def add_block():
     type = request.form.get('type')
-    content = request.form.get("content")
+
     collection_id = request.form.get("collection_id")
     id = str(uuid.uuid4())
-
+    print(request.form)
     try:
         count = Block.query.count()
         print(count)
         if type == 'text' or type == 'url':
+            content = request.form.get("content")
             b = Block(type=type, content_text=content, order=count, id=id)
         else:
+            content = request.files.get("content")
             b = Block(type=type, content_pic=content, order=count, id=id)
         db_session.add(b)
         cb = CollectionBlock(id=collection_id, block_id=id)
