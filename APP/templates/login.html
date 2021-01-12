@@ -47,16 +47,16 @@
                     cookie.setCookie('phonenum', phonenum, 30);
                     alert(data.msg);
                     if(data.code != 1){
-                        window.location = "login.html";
+                        window.location = "%%url_for('start.login')%%";
                     }else{
-                        window.location = "personal.html";
+                        window.location = "%%url_for('start.personal')%%";
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert(XMLHttpRequest.status);
                     alert(XMLHttpRequest.readyState);
                     alert(textStatus);
-                    window.location = "login.html";
+                    window.location = "%%url_for('start.login')%%";
                 }
             });
         }
@@ -83,8 +83,8 @@
             </p>
         </div>
         <div class="reg-bar">
-            <a class="reg" href="register.html">立即注册</a>
-            <a class="forget" href="forget.html">忘记密码</a>
+            <a class="reg" href="%%url_for('start.register')%%">立即注册</a>
+            <a class="forget" href="%%url_for('start.forget')%%">忘记密码</a>
         </div>
     </div>
 </body>

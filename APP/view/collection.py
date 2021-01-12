@@ -36,7 +36,7 @@ def add_collection():
 @bp_collection.route("/select", methods=["POST"])
 def get_collection():
     # 搜索的关键词
-    name = request.form.get('name', None)
+    name = request.form.get('name', "")
     # 搜索对象
     phonenum = request.form.get('phonenum', None)
     collections = []

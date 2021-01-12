@@ -25,8 +25,12 @@
             success: function(data){
     			alert(data.msg);
                 if(data.code == 1){
-                    window.location = "login.html";
+                    window.location = "%%url_for('start.login')%%";
                 }
+                else{
+                    window.location = "%%url_for('start.register')%%";
+                }
+
     		},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
                 alert(XMLHttpRequest.status);

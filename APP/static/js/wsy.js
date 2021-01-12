@@ -1,5 +1,26 @@
 
 var url_prefix = "http://127.0.0.1:5000/";
+
+var cookie = {
+                setCookie: function (name, value) {
+                    document.cookie = name + '=' + value + ';';
+                },
+                getCookie: function (name) {
+                    var arr = document.cookie.split('; ');
+                    for (var i = 0; i < arr.length; i++) {
+                        var arr2 = arr[i].split('=');
+                        if (arr2[0] == name) {
+                            return arr2[1];
+                        }
+                    }
+
+                    return '';
+                },
+                removeCookie: function (name) {
+                    cookie.setCookie(name, '', -1)
+                }
+            };
+
 function sendRequest(url_suffix, data, func) {
     var url = url_prefix + url_suffix;
     $.ajax({
@@ -218,7 +239,9 @@ var page = new Vue({
             }
         },
         jump_to: function (url, block_name, collection_id) {
-            window.location.href = url + "?name=" + block_name + "&id=" + collection_id;
+            cookie.setCookie('name',block_name);
+            cookie.setCookie('id',collection_id);
+            window.location.href = "/add";
         },
         edit: function (order, type) {
             var obj = this.textList[order]
@@ -306,7 +329,9 @@ var recommend = new Vue({
     },
     methods: {
         jump_to: function (url, block_name) {
-            window.location.href = url + "?name=" + block_name + "&id=null";
+            cookie.setCookie('name',block_name);
+            cookie.setCookie('id',null);
+            window.location.href = "%%url_for('"+url+"')%%";
         },
         like: function (order) {
             var obj = this.textList[order];

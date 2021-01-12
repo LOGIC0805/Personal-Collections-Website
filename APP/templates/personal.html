@@ -423,14 +423,14 @@
                         <ul class="vertical-nav-menu">
                             <li class="app-sidebar__heading">个人中心</li>
                             <li>
-                                <a href="personal.html" class="mm-active">
+                                <a href="%%url_for('start.personal')%%" class="mm-active">
                                     <i class="metismenu-icon pe-7s-browser">
                                     </i>我的集锦
                                 </a>
                             </li>
                             <li class="app-sidebar__heading">广场</li>
                             <li>
-                                <a href="square.html">
+                                <a href="%%url_for('start.square')%%">
                                     <i class="metismenu-icon pe-7s-display2">
                                     </i>用户集锦
                                 </a>
@@ -505,7 +505,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="widget-numbers" v-on:click="jump_to('add.html',item.name,id);">
+                                <div class="widget-numbers" v-on:click="jump_to('start.add',item.name,id);">
                                     <span>{{item.name}}</span></div><br>
                                 <div class="widget-subheading"><i
                                         class="fa fa-tags"></i>&nbsp;&nbsp;<span>{{item.tag}}</span></div>
@@ -552,29 +552,12 @@
         <script src="../static/js/wsy.js"></script>
         <script type="text/javascript" src="../static/assets/scripts/main.js"></script>
         <script>
-            var cookie = {
-                setCookie: function (name, value) {
-                    document.cookie = name + '=' + value + ';';
-                },
-                getCookie: function (name) {
-                    var arr = document.cookie.split('; ');
-                    for (var i = 0; i < arr.length; i++) {
-                        var arr2 = arr[i].split('=');
-                        if (arr2[0] == name) {
-                            return arr2[1];
-                        }
-                    }
 
-                    return '';
-                },
-                removeCookie: function (name) {
-                    cookie.setCookie(name, '', -1)
-                }
-            };
             // wsy:这个phonenum可能需要用什么传参的方式得到
             var phonenum = cookie.getCookie("phonenum");
+            page.id = phonenum;
             if(phonenum == ""){
-                window.location.href = "login.html";
+                window.location.href = "%%url_for('start.login')%%";
                 //phonenum = "1";
             }
 

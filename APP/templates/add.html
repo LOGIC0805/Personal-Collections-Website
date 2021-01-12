@@ -572,7 +572,8 @@
                     name: null
                 },
                 created() {
-                    this.name = GetRequest()['name'];
+                    this.name = cookie.getCookie('name');
+                    page.id = cookie.getCookie('id');
                     console.log(this.name);
                 },
             }

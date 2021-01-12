@@ -1,16 +1,24 @@
 from flask import request, Flask, jsonify
-import json
-from flask_sqlalchemy import SQLAlchemy
-from APP.view import collection, block
 from APP.view.auth import bp_auth
 from APP.view.block import bp_block
+from APP.view.start import bp_start
 from APP.view.collection import bp_collection
 from APP.view.database import init_db
+from flask_cors import *
 
-app = Flask(__name__)
 
+class CustomFlask(Flask):
+
+    jinja_options = Flask.jinja_options.copy()
+    jinja_options.update(dict(
+        variable_start_string='%%',  # Default is '{{', I'm changing this because Vue.js uses '{{' / '}}'
+        variable_end_string='%%',
+    ))
+app = CustomFlask(__name__)
+CORS(app, supports_credentials=True)
 app.register_blueprint(bp_auth)
+app.register_blueprint(bp_start)
 app.register_blueprint(bp_block)
 app.register_blueprint(bp_collection)
-init_db()
+#init_db()
 app.run(debug=True)
