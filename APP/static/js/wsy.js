@@ -23,7 +23,6 @@ var cookie = {
 
 function sendRequest(url_suffix, data, func) {
     var url = url_prefix + url_suffix;
-    alert(url);
     $.ajax({
         type: "post",
         url: url,
@@ -323,8 +322,9 @@ var recommend = new Vue({
     },
     created: function () {
         var url;
-        url = "collection/recommend";
+        url = "collection/recommand";
         var data = new FormData();
+	data.append('phonenum', phonenum);
         sendRequest(url, data, function (data) {
             recommend.textList = data.collections;
             checkLike(this);

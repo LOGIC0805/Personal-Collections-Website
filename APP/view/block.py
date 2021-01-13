@@ -175,10 +175,60 @@ def edit():
 def get_web_name():
     url = request.form.get('url')
     ret = {'msg': 'succuss'}
-    html = requests.get(url)
-    html.encoding = 'utf-8'
-    soup = BeautifulSoup(html.text, "html.parser")
-    title = soup.find('title').text
+    ori_url = url
+    title = None
+    if ori_url[0:4] != "http":
+        url = "https://" + ori_url
+    try:
+        html = requests.get(url)
+    except:
+        url = "http://" + ori_url
+        try:
+            html = requests.get(url)
+        except:
+            title = None
+        else:
+            soup = BeautifulSoup(html.text, "html.parser")
+            coding = soup.find('meta', attrs={'http-equiv': 'Content-Type'})
+            if coding != None:
+                coding = coding['content']
+                if 'charset' in coding:
+                    html.encoding = coding[coding.find('charset')+len('charset='):]
+                else:
+                    html.encoding = 'utf-8'
+            else:
+                coding = soup.find('meta', attrs={'http-equiv': 'content-type'})
+                if coding != None:
+                    coding = coding['content']
+                    if 'charset' in coding:
+                        html.encoding = coding[coding.find('charset')+len('charset='):]
+                    else:
+                        html.encoding = 'utf-8'
+                else:
+                    html.encoding = 'utf-8'
+            soup = BeautifulSoup(html.text, "html.parser")
+            title = soup.find('title').text
+    else:
+        soup = BeautifulSoup(html.text, "html.parser")
+        coding = soup.find('meta', attrs={'http-equiv': 'Content-Type'})
+        if coding != None:
+            coding = coding['content']
+            if 'charset' in coding:
+                html.encoding = coding[coding.find('charset')+len('charset='):]
+            else:
+                html.encoding = 'utf-8'
+        else:
+            coding = soup.find('meta', attrs={'http-equiv': 'content-type'})
+            if coding != None:
+                coding = coding['content']
+                if 'charset' in coding:
+                    html.encoding = coding[coding.find('charset')+len('charset='):]
+                else:
+                    html.encoding = 'utf-8'
+            else:
+                html.encoding = 'utf-8'
+        soup = BeautifulSoup(html.text, "html.parser")
+        title = soup.find('title').text
     """	    
     ret['name'] = url对应的网站的title，没有就返回url
     """	    

@@ -36,7 +36,6 @@
             var phonenum = $(obj).parent().prev().prev().children("#phonenum").val();
             var password = $(obj).parent().prev().children("#password").val();
             var url_ = "http://"+url+":5000/bp_auth/login";
-		alert(url_);
             $.ajax({
                 type: "POST",
                 url: url_,
@@ -46,7 +45,7 @@
                 },
                 success: function (data) {
                     cookie.setCookie('phonenum', phonenum, 30);
-                    alert(data.msg);
+                    
                     if(data.code != 1){
                         window.location = "%%url_for('start.login')%%";
                     }else{
@@ -54,8 +53,7 @@
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert(XMLHttpRequest.status);
-                    alert(XMLHttpRequest.readyState);
+                    
                     alert(textStatus);
                     window.location = "%%url_for('start.login')%%";
                 }

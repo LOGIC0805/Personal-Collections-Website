@@ -24,19 +24,17 @@
                 password1: password1
             },
             success: function(data){
-    			alert(data.msg);
                 if(data.code == 1){
-                    window.location = "login.html";
+                    window.location = "/login";
                 }
                 else{
-                    window.location = "forget.html";
+                    window.location = "/forget";
                 }
     		},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert(XMLHttpRequest.status);
-                alert(XMLHttpRequest.readyState);
+               
                 alert(textStatus);
-			    window.location = "forget.html";
+			    window.location = "/forget";
             }
         });
     } 
