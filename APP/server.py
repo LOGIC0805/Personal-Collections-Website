@@ -1,3 +1,6 @@
+import sys
+sys.path.append('..')
+
 from flask import request, Flask, jsonify
 from APP.view.auth import bp_auth
 from APP.view.block import bp_block
@@ -19,4 +22,4 @@ app.register_blueprint(bp_start)
 app.register_blueprint(bp_block)
 app.register_blueprint(bp_collection)
 init_db()
-app.run(debug=True)
+app.run(host="0.0.0.0",port="5000",debug=True)

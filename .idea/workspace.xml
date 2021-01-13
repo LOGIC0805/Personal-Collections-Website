@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ccd18ece-a4ed-4116-ada0-c6de56a9afb1" name="默认的" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APP/static/js/wsy.js" beforeDir="false" afterPath="$PROJECT_DIR$/APP/static/js/wsy.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APP/templates/add.html" beforeDir="false" afterPath="$PROJECT_DIR$/APP/templates/add.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +22,11 @@
     </findStrings>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="wengsy" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
   </component>
@@ -160,6 +163,14 @@
       <option name="presentableId" value="Default" />
       <updated>1609940270186</updated>
     </task>
+    <task id="LOCAL-00001" summary="增加markdown支持">
+      <created>1610454722126</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1610454722126</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TodoView">
@@ -193,6 +204,10 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="增加markdown支持" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加markdown支持" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/APP/view/block.py">

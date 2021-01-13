@@ -6,40 +6,9 @@
     <title>注册</title>
     <script src="../static/js/jquery-3.5.1.min.js"></script>
     <script src="http://api.html5media.info/1.1.8/html5media.min.js"></script>
-    <script type="text/javascript">
-    function register(obj){
-        var phonenum = $(obj).parent().prev().prev().prev().prev().children("#phonenum").val();
-        var username = $(obj).parent().prev().prev().prev().children("#username").val();
-        var password = $(obj).parent().prev().prev().children("#password").val();
-        var password1 = $(obj).parent().prev().children("#password1").val();
-        var url = "http://127.0.0.1:5000/bp_auth/register";
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: {
-                phonenum: phonenum,
-                username: username,
-                password: password,
-                password1: password1
-            },
-            success: function(data){
-    			alert(data.msg);
-                if(data.code == 1){
-                    window.location = "%%url_for('start.login')%%";
-                }
-                else{
-                    window.location = "%%url_for('start.register')%%";
-                }
-
-    		},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert(XMLHttpRequest.status);
-                alert(XMLHttpRequest.readyState);
-                alert(textStatus);
-			    window.location = "register.html";
-            }
-        });
-    }    
+    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+    <script>
+    var url = returnCitySN["cip"];
     </script>
 </head>
 <body>
@@ -60,6 +29,42 @@
             <p><input type="submit" id="register" value="注册" onclick="register(this)" style="padding-left:0;margin-left:0;width:350px;background-color:white;color:#1f6f4a;cursor:pointer"></p>
         </div>
     </div>
+    <script type="text/javascript">
+        function register(obj){
+            var phonenum = $(obj).parent().prev().prev().prev().prev().children("#phonenum").val();
+            var username = $(obj).parent().prev().prev().prev().children("#username").val();
+            var password = $(obj).parent().prev().prev().children("#password").val();
+            var password1 = $(obj).parent().prev().children("#password1").val();
+            var suf_url = ":5000/bp_auth/register";
+            var pre_url = "http://"
+            $.ajax({
+                type: "POST",
+                url: pre_url+url+suf_url,
+                data: {
+                    phonenum: phonenum,
+                    username: username,
+                    password: password,
+                    password1: password1
+                },
+                success: function(data){
+                    alert(data.msg);
+                    if(data.code == 1){
+                        window.location = "%%url_for('start.login')%%";
+                    }
+                    else{
+                        window.location = "%%url_for('start.register')%%";
+                    }
+    
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                    window.location = "register.html";
+                }
+            });
+        }    
+        </script>
 
 </body>
 </html>

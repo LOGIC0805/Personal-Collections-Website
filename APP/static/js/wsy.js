@@ -1,5 +1,5 @@
 
-var url_prefix = "http://127.0.0.1:5000/";
+var url_prefix = "http://"+returnCitySN["cip"]+":5000/";
 
 var cookie = {
                 setCookie: function (name, value) {
