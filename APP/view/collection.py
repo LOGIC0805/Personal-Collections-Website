@@ -67,6 +67,7 @@ def get_collection():
 
 @bp_collection.route("/recommand", methods=["POST"])
 def recommand_collection():
+    phonenum = request.form.get('phonenum')
     collections = []
     """
     返回推荐的内容
@@ -75,6 +76,18 @@ def recommand_collection():
     collections.append({'id': '3', 'name': 'wnqian','like':3})
     """
     try:
+        row0 = db_session.query(Collection).join(UserLike, UserLike.collection_id == Collection.id).filter(
+            UserLike.phonenum == phonenum).all()
+        # 构建用户tag字典
+        user_like = {}
+        for collection in row0:
+            tag_tmp = collection.tag
+            if tag_tmp in user_like.keys():
+                user_like[tag_tmp] += 1
+            else:
+                user_like[tag_tmp] = 1
+        print(user_like)
+
         row = db_session.query(Collection).filter().all()
         for item in row:
             collection_tmp = {}
@@ -82,16 +95,15 @@ def recommand_collection():
             collection_tmp['name'] = item.name
             collection_tmp['like'] = item.like
             collection_tmp['tag'] = item.tag
-            random_int = random.randint(0, 9)
-            if random_int <= 4:
-                continue
-            else:
-                collections.append(collection_tmp)
+            collection_tmp['priority'] = user_like[item.tag] if item.tag in user_like.keys() else 0
+            collections.append(collection_tmp)
+        # 对tag相关性进行排序
+        collections_new = sorted(collections, key=lambda x: x.__getitem__('priority'), reverse=True)
     except BaseException as e:
         print(str(e))
         ret = {'msg': 'failed!'}
         return json_util.dumps(ret)
-    ret = {'collections': collections, 'msg': 'succuss'}
+    ret = {'collections': collections_new, 'msg': 'succuss'}
     return json_util.dumps(ret)
 
 
