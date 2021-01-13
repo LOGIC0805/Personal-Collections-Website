@@ -7,7 +7,7 @@
     <title>登录</title>
     <script src="../static/js/jquery-3.5.1.min.js"></script>
     <script src="http://api.html5media.info/1.1.8/html5media.min.js"></script>
-    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+    <script src="../static/js/ip.js"></script>
     <script type="text/javascript">
         var cookie = {
             setCookie: function (cname, cvalue, exdays) {
@@ -35,11 +35,11 @@
         function login(obj) {
             var phonenum = $(obj).parent().prev().prev().children("#phonenum").val();
             var password = $(obj).parent().prev().children("#password").val();
-            var url = "http://"+returnCitySN["cip"]+":5000/bp_auth/login";
-
+            var url_ = "http://"+url+":5000/bp_auth/login";
+		alert(url_);
             $.ajax({
                 type: "POST",
-                url: url,
+                url: url_,
                 data: {
                     phonenum: phonenum,
                     password: password

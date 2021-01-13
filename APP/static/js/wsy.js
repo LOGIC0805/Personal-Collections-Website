@@ -1,5 +1,5 @@
 
-var url_prefix = "http://"+returnCitySN["cip"]+":5000/";
+var url_prefix = 'http://'+url+':5000/';
 
 var cookie = {
                 setCookie: function (name, value) {
@@ -23,6 +23,7 @@ var cookie = {
 
 function sendRequest(url_suffix, data, func) {
     var url = url_prefix + url_suffix;
+    alert(url);
     $.ajax({
         type: "post",
         url: url,

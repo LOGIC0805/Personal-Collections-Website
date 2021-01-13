@@ -28,7 +28,7 @@ def add_block():
         else:
             img = request.files.get("content")
             print(img)
-            path = basedir + "/APP/static/img/"
+            path = basedir + "/static/img/"
             file_path = path + id + '.png'
             img.save(file_path)
             b = Block(type=type, content_text='static/img/'+id+'.png', order=count, id=id)

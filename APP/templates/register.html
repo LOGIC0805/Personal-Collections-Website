@@ -6,10 +6,7 @@
     <title>注册</title>
     <script src="../static/js/jquery-3.5.1.min.js"></script>
     <script src="http://api.html5media.info/1.1.8/html5media.min.js"></script>
-    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
-    <script>
-    var url = returnCitySN["cip"];
-    </script>
+    <script src="../static/js/ip.js"></script>
 </head>
 <body>
     <div class="background">
@@ -36,6 +33,7 @@
             var password = $(obj).parent().prev().prev().children("#password").val();
             var password1 = $(obj).parent().prev().children("#password1").val();
             var suf_url = ":5000/bp_auth/register";
+		alert(url);
             var pre_url = "http://"
             $.ajax({
                 type: "POST",
@@ -49,10 +47,10 @@
                 success: function(data){
                     alert(data.msg);
                     if(data.code == 1){
-                        window.location = "%%url_for('start.login')%%";
+                        window.location = "/login";
                     }
                     else{
-                        window.location = "%%url_for('start.register')%%";
+                        window.location = "/register";
                     }
     
                 },
@@ -60,7 +58,7 @@
                     alert(XMLHttpRequest.status);
                     alert(XMLHttpRequest.readyState);
                     alert(textStatus);
-                    window.location = "register.html";
+                    window.location = "/register";
                 }
             });
         }    
