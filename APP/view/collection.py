@@ -77,7 +77,7 @@ def recommand_collection():
     """
     try:
         row0 = db_session.query(Collection).join(UserLike, UserLike.collection_id == Collection.id).filter(
-            UserLike.phonenum == phonenum).all()
+            UserLike.phonenum == phonenum).order_by(order).all()
         # 构建用户tag字典
         user_like = {}
         for collection in row0:
