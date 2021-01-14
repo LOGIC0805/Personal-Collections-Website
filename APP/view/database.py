@@ -1,18 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-import socket
- 
-def get_host_ip():
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(('8.8.8.8', 80))
-        ip = s.getsockname()[0]
-    finally:
-        s.close()
- 
-    return ip
-engine = create_engine('mysql+pymysql://root:cui,logic@127.0.0.1:3306/cp', convert_unicode=True)
+
+engine = create_engine('mysql+pymysql://root:root@mysql:3306/cp', convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
@@ -24,6 +14,8 @@ def init_db():
     # 在这里导入定义模型所需要的所有模块，这样它们就会正确的注册在
     # 元数据上。否则你就必须在调用 init_db() 之前导入它们。
     import APP.view.model
+    #file=open('./1.txt','w')
+    #print('aaaa',file=file)
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
-
+    #file.close()

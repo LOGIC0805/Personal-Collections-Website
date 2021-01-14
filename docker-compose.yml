@@ -5,15 +5,24 @@ services:
     build: ./mysql
     environment:
       - MYSQL_DATABASE=cp
-      - MYSQL_ROOT_PASSWORD=cui,logic
+      - MYSQL_ROOT_PASSWORD=root
     ports:
       - "3306:3306"
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+   # networks:
+   #         - mysql_net
   web:
     build: ./APP
     ports:
      - "5000:5000"
     links:
-     - mysql:mysql
+     - mysql
     depends_on:
      - mysql
+    environment:
+      IP:
+#networks:
+#  mysql_net:
+#     driver: bridge
+  
+ 

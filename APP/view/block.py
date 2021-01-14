@@ -60,7 +60,7 @@ def get_block():
     """
     try:
         row = db_session.query(Block).join(CollectionBlock, CollectionBlock.block_id == Block.id).filter(
-            CollectionBlock.id == id).all()
+            CollectionBlock.id == id).order_by(Block.order).all()
         for item in row:
             block_tmp = {}
             block_tmp['id'] = item.id

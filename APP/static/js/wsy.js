@@ -221,7 +221,7 @@ var page = new Vue({
             if (type == 'block') {
                 data.append('collection_id', page.id);
             }
-            sendRequest(url, data, getContent(type));
+            sendRequest(url, data, function(){getContent(type);});
         },
         delete_item: function (order, type) {
             var url = type + '/delete';
@@ -335,9 +335,9 @@ var recommend = new Vue({
         });
     },
     methods: {
-        jump_to: function (url, block_name) {
+        jump_to: function (url, block_name,collection_id) {
             cookie.setCookie('name',block_name);
-            cookie.setCookie('id',null);
+            cookie.setCookie('id',collection_id);
             window.location.href = "/add";
         },
         like: function (order) {

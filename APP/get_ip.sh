@@ -1,5 +1,9 @@
 #！/bin/bash
-echo var url=\"$IP:$PORT\"; > ./static/js/ip.js 
+if [ $IP ];then
+  echo var url=\"$IP\"\; > ./static/js/ip.js 
+else
+  echo "no ip" > ./1.txt
+fi
 
 
 
