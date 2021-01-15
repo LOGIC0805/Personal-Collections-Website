@@ -47,7 +47,7 @@ def get_collection():
     """
     try:
         row = db_session.query(Collection).filter(Collection.name.like('%' + name + '%'),
-                                                  Collection.phonenum == phonenum).all()
+                                                  Collection.phonenum == phonenum).order_by(Collection.order).all()
         for item in row:
             collection_tmp = {}
             collection_tmp['id'] = item.id
@@ -77,7 +77,7 @@ def recommand_collection():
     """
     try:
         row0 = db_session.query(Collection).join(UserLike, UserLike.collection_id == Collection.id).filter(
-            UserLike.phonenum == phonenum).order_by(order).all()
+            UserLike.phonenum == phonenum).all()
         # 构建用户tag字典
         user_like = {}
         for collection in row0:
